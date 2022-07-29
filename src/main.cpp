@@ -3,61 +3,14 @@
 #include <bitset>
 #include <wiringPi.h>
 #include <iostream>
-#include <chrono>
 
-#define debug(x) cerr << #x << ": " << x << endl;
-
-#define QNT_DEFAULT_STATES 6
-#define QNT_NIGHT_MODE_STATES 2
-
-/* 
- * Configuração dos pinos dos LEDs e Botão
-*/
-
-// Cruzamento 1
-
-// #define SEMAFORO_1_VERDE        31 // Saída
-// #define SEMAFORO_1_AMARELO      25 // Saída
-// #define SEMAFORO_1_VERMELHO     29 // Saída
-// #define SEMAFORO_2_VERDE        28 // Saída
-// #define SEMAFORO_2_AMARELO      27 // Saída
-// #define SEMAFORO_2_VERMELHO     26 // Saída
-// #define BOTAO_PEDESTRE_1        10 // Entrada
-// #define BOTAO_PEDESTRE_2        11 // Entrada
-// #define SENSOR_PASSAGEM_1       15 // Entrada
-// #define SENSOR_PASSAGEM_2       16 // Entrada
-// #define SENSOR_VELOCIDADE_1_A    1 // Entrada
-// #define SENSOR_VELOCIDADE_1_B    4 // Entrada
-// #define SENSOR_VELOCIDADE_2_A    5 // Entrada
-// #define SENSOR_VELOCIDADE_2_B    6 // Entrada
-
-// Cruzamento 2
-
-#define SEMAFORO_1_VERDE         8 // Saída
-#define SEMAFORO_1_AMARELO       9 // Saída
-#define SEMAFORO_1_VERMELHO     14 // Saída
-#define SEMAFORO_2_VERDE        30 // Saída
-#define SEMAFORO_2_AMARELO      21 // Saída
-#define SEMAFORO_2_VERMELHO     22 // Saída
-#define BOTAO_PEDESTRE_1        12 // Entrada
-#define BOTAO_PEDESTRE_2        13 // Entrada
-#define SENSOR_PASSAGEM_1        7 // Entrada
-#define SENSOR_PASSAGEM_2        0 // Entrada
-#define SENSOR_VELOCIDADE_1_A    2 // Entrada
-#define SENSOR_VELOCIDADE_1_B    3 // Entrada
-#define SENSOR_VELOCIDADE_2_A   23 // Entrada
-#define SENSOR_VELOCIDADE_2_B   24 // Entrada
+#include "staticFunctions.hpp"
+#include "globalValues.hpp"
+// #include "handlers.hpp"
 
 using namespace std;
 
-uint64_t getTimeMs(){
-    return chrono::duration_cast<chrono::milliseconds>(
-        chrono::system_clock::now().time_since_epoch()
-    ).count();
-}
-
 void configuraPinos(){
-
     // Define entradas
     pinMode(BOTAO_PEDESTRE_1,       INPUT);
     pinMode(BOTAO_PEDESTRE_2,       INPUT);
@@ -112,17 +65,6 @@ S1 = semáforo 1; S2 = semáforo 2
 
 */
 
-typedef struct {
-    bitset<6> state;
-    int minTime;
-    int maxTime;
-} TrafficLightState;
-
-TrafficLightState states[QNT_DEFAULT_STATES], nightModeStates[QNT_NIGHT_MODE_STATES], emergencyModeState;
-bool inoutNightMode = false, inoutEmergencyMode = false;
-bool pedestrianButton1Pressed = false, pedestrianButton2Pressed = false;
-bool passageSensorPressed = false;
-
 void setTrafficLightStates(){
     states[0].state   = 0b100100;  // 001001
     states[0].minTime = 1000;
@@ -171,113 +113,6 @@ uint64_t setState(bitset<6> state){
     return getTimeMs();
 }
 
-// // Pedestrian Button 1 Handles
-// void handlePedestrianButton1(){
-//     printf("Botão pedestre 1\n");
-//     debug(digitalRead(BOTAO_PEDESTRE_1     ));
-//     // pedestrianButton1Pressed = true;
-// }
-
-// void handlePedestrianButton1Fall(){
-//     printf("Botão pedestre 1 falling\n");
-//     debug(digitalRead(BOTAO_PEDESTRE_1     ));
-//     // pedestrianButton1Pressed = true;
-// }
-
-void handlePedestrianButton1Both(){
-    printf("Botão pedestre 1 both\n");
-    uint64_t pressedTime = getTimeMs();
-    int counter = 0;
-    debug(pressedTime);
-    while(getTimeMs() - pressedTime < 4 && counter < 100){
-        debug(getTimeMs() - pressedTime);
-        debug(digitalRead(BOTAO_PEDESTRE_1));
-        counter++;
-    }
-    // pedestrianButton1Pressed = true;
-}
-
-// // Pedestrian Button 2 Handles
-// void handlePedestrianButton2(){
-//     printf("Botão pedestre 2\n");
-//     debug(digitalRead(BOTAO_PEDESTRE_2     ));
-//     // pedestrianButton2Pressed = true;
-// }
-
-// void handlePedestrianButton2Fall(){
-//     printf("Botão pedestre 2 falling\n");
-//     debug(digitalRead(BOTAO_PEDESTRE_2     ));
-//     // pedestrianButton2Pressed = true;
-// }
-
-// // Passage sensor 1 Handles
-// void handlePassageSensor1Rising(){
-//     printf("Sensor de passagem 1 rising\n");
-//     debug(digitalRead(SENSOR_PASSAGEM_1    ));
-//     // passageSensorPressed = false;
-// }
-
-// void handlePassageSensor1Falling(){
-//     printf("Sensor de passagem 1 falling\n");
-//     debug(digitalRead(SENSOR_PASSAGEM_1    ));
-//     // passageSensorPressed = true;
-// }
-
-// // Passage sensor 2 Handles
-// void handlePassageSensor2Rising(){
-//     printf("Sensor de passagem 2 rising\n");
-//     debug(digitalRead(SENSOR_PASSAGEM_2    ));
-//     // passageSensorPressed = false;
-// }
-
-// void handlePassageSensor2Falling(){
-//     printf("Sensor de passagem 2 falling\n");
-//     debug(digitalRead(SENSOR_PASSAGEM_2    ));
-//     // passageSensorPressed = true;
-// }
-
-// // Speed sensor 1 Handles
-// void handleSpeedSensor1ARising(){
-//     printf("Sensor de velocidade 1 A rising\n");
-//     debug(digitalRead(SENSOR_VELOCIDADE_1_A));
-// }
-
-// void handleSpeedSensor1AFalling(){
-//     printf("Sensor de velocidade 1 A falling\n");
-//     debug(digitalRead(SENSOR_VELOCIDADE_1_A));
-// }
-
-// void handleSpeedSensor1BRising(){
-//     printf("Sensor de velocidade 1 B rising\n");
-//     debug(digitalRead(SENSOR_VELOCIDADE_1_B));
-// }
-
-// void handleSpeedSensor1BFalling(){
-//     printf("Sensor de velocidade 1 B falling\n");
-//     debug(digitalRead(SENSOR_VELOCIDADE_1_B));
-// }
-
-// // Speed sensor 2 Handles
-// void handleSpeedSensor2ARising(){
-//     printf("Sensor de velocidade 2 A rising\n");
-//     debug(digitalRead(SENSOR_VELOCIDADE_2_A));
-// }
-
-// void handleSpeedSensor2AFalling(){
-//     printf("Sensor de velocidade 2 A falling\n");
-//     debug(digitalRead(SENSOR_VELOCIDADE_2_A));
-// }
-
-// void handleSpeedSensor2BRising(){
-//     printf("Sensor de velocidade 2 B rising\n");
-//     debug(digitalRead(SENSOR_VELOCIDADE_2_B));
-// }
-
-// void handleSpeedSensor2BFalling(){
-//     printf("Sensor de velocidade 2 B falling\n");
-//     debug(digitalRead(SENSOR_VELOCIDADE_2_B));
-// }
-
 int main(int argc, char **argv)
 {
     bool onNightMode = false, onEmergencyMode = false;
@@ -290,21 +125,14 @@ int main(int argc, char **argv)
 
     setState(nightModeStates[0].state); // just for test
 
-    wiringPiISR(BOTAO_PEDESTRE_1,       INT_EDGE_BOTH,      &handlePedestrianButton1Both);
-    // wiringPiISR(BOTAO_PEDESTRE_2,       INT_EDGE_RISING,    &handlePedestrianButton2);
-    // // wiringPiISR(BOTAO_PEDESTRE_2,       INT_EDGE_FALLING,   &handlePedestrianButton2Fall);
-    // wiringPiISR(SENSOR_PASSAGEM_1,      INT_EDGE_RISING,    &handlePassageSensor1Rising);
-    // // wiringPiISR(SENSOR_PASSAGEM_1,      INT_EDGE_FALLING,   &handlePassageSensor1Falling);
-    // wiringPiISR(SENSOR_PASSAGEM_2,      INT_EDGE_RISING,    &handlePassageSensor2Rising);
-    // // wiringPiISR(SENSOR_PASSAGEM_2,      INT_EDGE_FALLING,   &handlePassageSensor2Falling);
-    // wiringPiISR(SENSOR_VELOCIDADE_1_A,  INT_EDGE_RISING,    &handleSpeedSensor1ARising);
-    // // wiringPiISR(SENSOR_VELOCIDADE_1_A,  INT_EDGE_FALLING,   &handleSpeedSensor1AFalling);
-    // wiringPiISR(SENSOR_VELOCIDADE_1_B,  INT_EDGE_RISING,    &handleSpeedSensor1BRising);
-    // // wiringPiISR(SENSOR_VELOCIDADE_1_B,  INT_EDGE_FALLING,   &handleSpeedSensor1BFalling);
-    // wiringPiISR(SENSOR_VELOCIDADE_2_A,  INT_EDGE_RISING,    &handleSpeedSensor2ARising);
-    // // wiringPiISR(SENSOR_VELOCIDADE_2_A,  INT_EDGE_FALLING,   &handleSpeedSensor2AFalling);
-    // wiringPiISR(SENSOR_VELOCIDADE_2_B,  INT_EDGE_RISING,    &handleSpeedSensor2BRising);
-    // // wiringPiISR(SENSOR_VELOCIDADE_2_B,  INT_EDGE_FALLING,   &handleSpeedSensor2BFalling);
+    wiringPiISR(BOTAO_PEDESTRE_1,       INT_EDGE_BOTH,    &handlePedestrianButton1);
+    wiringPiISR(BOTAO_PEDESTRE_2,       INT_EDGE_BOTH,    &handlePedestrianButton2);
+    wiringPiISR(SENSOR_PASSAGEM_1,      INT_EDGE_BOTH,    &handlePassageSensor1);
+    wiringPiISR(SENSOR_PASSAGEM_2,      INT_EDGE_BOTH,    &handlePassageSensor2);
+    wiringPiISR(SENSOR_VELOCIDADE_1_A,  INT_EDGE_FALLING, &handleSpeedSensor1A);
+    wiringPiISR(SENSOR_VELOCIDADE_1_B,  INT_EDGE_FALLING, &handleSpeedSensor1B);
+    wiringPiISR(SENSOR_VELOCIDADE_2_A,  INT_EDGE_FALLING, &handleSpeedSensor2A);
+    wiringPiISR(SENSOR_VELOCIDADE_2_B,  INT_EDGE_FALLING, &handleSpeedSensor2B);
 
     debug(digitalRead(BOTAO_PEDESTRE_1     ));
     debug(digitalRead(BOTAO_PEDESTRE_1     ));
@@ -341,7 +169,7 @@ int main(int argc, char **argv)
             delay(currentState.minTime);
 
             // Handle pedestrian's buttons and passage's sensors
-            while(getTimeMs() - stateStartTime < currentState.maxTime){
+            while((int)(getTimeMs() - stateStartTime) < currentState.maxTime){
                 debug(getTimeMs() - stateStartTime);
                 if(pedestrianButton1Pressed && currentState.state == 0b100001){
                     pedestrianButton1Pressed = false;
