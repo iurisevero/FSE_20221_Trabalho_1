@@ -25,7 +25,7 @@ obj/%.o: src/%.cpp
 create_folders:
 	@mkdir -p $(OBJFOLDER) $(BINFOLDER)
 run: bin/prog
-	bin/prog
+	bin/prog $(CROSS)
 
 .PHONY: clean
 clean:

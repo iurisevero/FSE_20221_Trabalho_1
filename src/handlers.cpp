@@ -1,6 +1,6 @@
 #include "handlers.hpp"
 #include "globalValues.hpp"
-#include "staticFunctions.hpp"
+#include "generalFunctions.hpp"
 
 #include <wiringPi.h>
 #include <iostream>
@@ -16,14 +16,14 @@ int defaultSpeedSensor2A;
 int defaultSpeedSensor2B;
 
 void setDefaultInputValues(){
-    defaultPedestrianButton1 = digitalRead(BOTAO_PEDESTRE_1);
-    defaultPedestrianButton2 = digitalRead(BOTAO_PEDESTRE_2);
-    defaultPassageSensor1    = digitalRead(SENSOR_PASSAGEM_1);
-    defaultPassageSensor2    = digitalRead(SENSOR_PASSAGEM_2);
-    defaultSpeedSensor1A     = digitalRead(SENSOR_VELOCIDADE_1_A);
-    defaultSpeedSensor1B     = digitalRead(SENSOR_VELOCIDADE_1_B);
-    defaultSpeedSensor2A     = digitalRead(SENSOR_VELOCIDADE_2_A);
-    defaultSpeedSensor2B     = digitalRead(SENSOR_VELOCIDADE_2_B);
+    defaultPedestrianButton1 = digitalRead(pedestrianButton1);
+    defaultPedestrianButton2 = digitalRead(pedestrianButton2);
+    defaultPassageSensor1    = digitalRead(passSensor1);
+    defaultPassageSensor2    = digitalRead(passSensor2);
+    defaultSpeedSensor1A     = digitalRead(speedSensor1A);
+    defaultSpeedSensor1B     = digitalRead(speedSensor1B);
+    defaultSpeedSensor2A     = digitalRead(speedSensor2A);
+    defaultSpeedSensor2B     = digitalRead(speedSensor2B);
 }
 
 // Handler example
@@ -33,7 +33,7 @@ void setDefaultInputValues(){
 //     int counter = 0;
 //     while(getTimeMs() - pressedTime < 400){
 //     std::cerr << "getTimeMs() - pressedTime: " << getTimeMs() - pressedTime << std::endl;
-//         int read = digitalRead(BOTAO_PEDESTRE_1);
+//         int read = digitalRead(pedestrianButton1);
 //         std::cerr << "read: " << read << std::endl;
 //         counter += (read == defaultPassageSensor1? -1 : 1);
 //         if(counter == 5){
@@ -54,7 +54,7 @@ void handlePedestrianButton1(){
     uint64_t pressedTime = getTimeMs();
     int counter = 0;
     while(getTimeMs() - pressedTime < 400){
-        counter += (digitalRead(BOTAO_PEDESTRE_1) == defaultPedestrianButton1? -1 : 1);
+        counter += (digitalRead(pedestrianButton1) == defaultPedestrianButton1? -1 : 1);
         if(counter == 5){
             pedestrianButton1Pressed = true;
             break;
@@ -69,7 +69,7 @@ void handlePedestrianButton2(){
     uint64_t pressedTime = getTimeMs();
     int counter = 0;
     while(getTimeMs() - pressedTime < 400){
-        counter += (digitalRead(BOTAO_PEDESTRE_2) == defaultPedestrianButton2? -1 : 1);
+        counter += (digitalRead(pedestrianButton2) == defaultPedestrianButton2? -1 : 1);
         if(counter == 5){
             pedestrianButton2Pressed = true;
             break;
@@ -84,7 +84,7 @@ void handlePassageSensor1(){
     uint64_t pressedTime = getTimeMs();
     int counter = 0;
     while(getTimeMs() - pressedTime < 400){
-        counter += (digitalRead(SENSOR_PASSAGEM_1) == defaultPassageSensor1? -1 : 1);
+        counter += (digitalRead(passSensor1) == defaultPassageSensor1? -1 : 1);
         if(counter == 5){
             passageSensorPressed = true;
             break;
@@ -104,7 +104,7 @@ void handlePassageSensor2(){
     uint64_t pressedTime = getTimeMs();
     int counter = 0;
     while(getTimeMs() - pressedTime < 400){
-        counter += (digitalRead(SENSOR_PASSAGEM_2) == defaultPassageSensor2? -1 : 1);
+        counter += (digitalRead(passSensor2) == defaultPassageSensor2? -1 : 1);
         if(counter == 5){
             passageSensorPressed = true;
             break;
@@ -125,7 +125,7 @@ void handleSpeedSensor1A(){
     uint64_t pressedTime = getTimeMs();
     int counter = 0;
     while(getTimeMs() - pressedTime < 400){
-        counter += (digitalRead(SENSOR_VELOCIDADE_1_A) == defaultSpeedSensor1A? -1 : 1);
+        counter += (digitalRead(speedSensor1A) == defaultSpeedSensor1A? -1 : 1);
         printf("Sensor de velocidade 1 A counter: %d\n", counter);
         if(counter == 5){
             uint64_t deltaT = getTimeMs() - speedSensor1BTriggerTime;
@@ -145,7 +145,7 @@ void handleSpeedSensor1B(){
     uint64_t pressedTime = getTimeMs();
     int counter = 0;
     while(getTimeMs() - pressedTime < 400){
-        counter += (digitalRead(SENSOR_VELOCIDADE_1_B) == defaultSpeedSensor1B? -1 : 1);
+        counter += (digitalRead(speedSensor1B) == defaultSpeedSensor1B? -1 : 1);
         if(counter == 5){
             speedSensor1BTriggerTime = getTimeMs();
             break;
@@ -162,7 +162,7 @@ void handleSpeedSensor2B(){
     uint64_t pressedTime = getTimeMs();
     int counter = 0;
     while(getTimeMs() - pressedTime < 400){
-        counter += (digitalRead(SENSOR_VELOCIDADE_2_B) == defaultSpeedSensor2B? -1 : 1);
+        counter += (digitalRead(speedSensor2B) == defaultSpeedSensor2B? -1 : 1);
         printf("Sensor de velocidade 2 B counter: %d\n", counter);
         if(counter == 5){
             uint64_t deltaT = getTimeMs() - speedSensor2ATriggerTime;
@@ -182,7 +182,7 @@ void handleSpeedSensor2A(){
     uint64_t pressedTime = getTimeMs();
     int counter = 0;
     while(getTimeMs() - pressedTime < 400){
-        counter += (digitalRead(SENSOR_VELOCIDADE_2_A) == defaultSpeedSensor2A? -1 : 1);
+        counter += (digitalRead(speedSensor2A) == defaultSpeedSensor2A? -1 : 1);
         if(counter == 5){
             speedSensor2ATriggerTime = getTimeMs();
             break;
