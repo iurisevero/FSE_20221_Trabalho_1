@@ -9,7 +9,7 @@ OBJFOLDER := obj/
 
 CC := g++
 
-CFLAGS := -W -Wall -ansi -pedantic -std=c++14 -lwiringPi
+CFLAGS := -W -Wall -ansi -pedantic -std=c++14 -lwiringPi -lpthread
 
 # Qualquer coisa de extensão .cpp
 SRCFILES := $(wildcard src/*.cpp)

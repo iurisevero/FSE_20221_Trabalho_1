@@ -91,6 +91,7 @@ void handlePassageSensor1(){
         }
         else if(counter == -5){
             passageSensorPressed = false;
+            qntCarsTriggeredSensor1++;
             break;
         }
     }
@@ -110,6 +111,7 @@ void handlePassageSensor2(){
         }
         else if(counter == -5){
             passageSensorPressed = false;
+            qntCarsTriggeredSensor2++;
             break;
         }
     }
@@ -117,16 +119,22 @@ void handlePassageSensor2(){
 }
 
 // Speed sensor 1 Handles
-uint64_t speedSensor1BTriggerTime;
+uint64_t speedSensor1BTriggerTime = UINT64_MAX;
 void handleSpeedSensor1A(){
     printf("Sensor de velocidade 1 A\n");
     uint64_t pressedTime = getTimeMs();
     int counter = 0;
     while(getTimeMs() - pressedTime < 400){
         counter += (digitalRead(SENSOR_VELOCIDADE_1_A) == defaultSpeedSensor1A? -1 : 1);
+        printf("Sensor de velocidade 1 A counter: %d\n", counter);
         if(counter == 5){
             uint64_t deltaT = getTimeMs() - speedSensor1BTriggerTime;
             printf("deltaT: %lu ; Speed: %ld km / h\n", deltaT, 3600 / deltaT);
+            speedSensor1BTriggerTime = UINT64_MAX;
+            break;
+        } else if(counter == -5){
+            printf("Sensor de velocidade 1 A counter -5\n");
+            qntCarsTriggerSpeedSensor1++;
             break;
         }
     }
@@ -148,16 +156,22 @@ void handleSpeedSensor1B(){
 
 
 // Speed sensor 2 Handles
-uint64_t speedSensor2ATriggerTime;
+uint64_t speedSensor2ATriggerTime = UINT64_MAX;
 void handleSpeedSensor2B(){
     printf("Sensor de velocidade 2 B\n");
     uint64_t pressedTime = getTimeMs();
     int counter = 0;
     while(getTimeMs() - pressedTime < 400){
         counter += (digitalRead(SENSOR_VELOCIDADE_2_B) == defaultSpeedSensor2B? -1 : 1);
+        printf("Sensor de velocidade 2 B counter: %d\n", counter);
         if(counter == 5){
             uint64_t deltaT = getTimeMs() - speedSensor2ATriggerTime;
             printf("deltaT: %lu ; Speed: %ld km / h\n", deltaT, 3600 / deltaT);
+            speedSensor2ATriggerTime = UINT64_MAX;
+            break;
+        } else if(counter == -5){
+            printf("Sensor de velocidade 2 B counter -5\n");
+            qntCarsTriggerSpeedSensor2++;
             break;
         }
     }

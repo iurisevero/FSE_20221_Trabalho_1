@@ -50,9 +50,12 @@ typedef struct {
     int maxTime;
 } TrafficLightState;
 
-extern TrafficLightState states[QNT_DEFAULT_STATES], nightModeStates[QNT_NIGHT_MODE_STATES], emergencyModeState;
+extern TrafficLightState states[QNT_DEFAULT_STATES], nightModeStates[QNT_NIGHT_MODE_STATES];
+extern TrafficLightState emergencyModeState, currentState;
 extern bool inoutNightMode, inoutEmergencyMode;
 extern bool pedestrianButton1Pressed, pedestrianButton2Pressed;
 extern bool passageSensorPressed;
+extern int qntCarsTriggeredSensor1, qntCarsTriggeredSensor2;
+extern int qntCarsTriggerSpeedSensor1, qntCarsTriggerSpeedSensor2;
 
 #endif /* _GLOBAL_VALUES_H_ */

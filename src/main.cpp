@@ -2,9 +2,10 @@
 #include <stdlib.h>
 #include <wiringPi.h>
 #include <iostream>
+#include <thread>
 
-#include "staticFunctions.hpp"
 #include "globalValues.hpp"
+#include "staticFunctions.hpp"
 #include "handlers.hpp"
 
 using namespace std;
@@ -112,6 +113,17 @@ uint64_t setState(bitset<6> state){
     return getTimeMs();
 }
 
+void printInfo(){
+    while(1){
+        fflush(stderr); fflush(stdout);
+        cerr << "qntCarsTriggeredSensor1: " << qntCarsTriggeredSensor1 << endl;
+        cerr << "qntCarsTriggeredSensor2: " << qntCarsTriggeredSensor2 << endl;
+        cerr << "qntCarsTriggerSpeedSensor1: " << qntCarsTriggerSpeedSensor1 << endl;
+        cerr << "qntCarsTriggerSpeedSensor2: " << qntCarsTriggerSpeedSensor2 << endl;
+        delay(60000);
+    }
+}
+
 int main(int argc, char **argv)
 {
     bool onNightMode = false, onEmergencyMode = false;
@@ -124,14 +136,14 @@ int main(int argc, char **argv)
 
     setState(nightModeStates[0].state); // just for test
 
-    wiringPiISR(BOTAO_PEDESTRE_1,       INT_EDGE_BOTH,    &handlePedestrianButton1);
-    wiringPiISR(BOTAO_PEDESTRE_2,       INT_EDGE_BOTH,    &handlePedestrianButton2);
-    wiringPiISR(SENSOR_PASSAGEM_1,      INT_EDGE_BOTH,    &handlePassageSensor1);
-    wiringPiISR(SENSOR_PASSAGEM_2,      INT_EDGE_BOTH,    &handlePassageSensor2);
-    wiringPiISR(SENSOR_VELOCIDADE_1_A,  INT_EDGE_FALLING, &handleSpeedSensor1A);
-    wiringPiISR(SENSOR_VELOCIDADE_1_B,  INT_EDGE_FALLING, &handleSpeedSensor1B);
-    wiringPiISR(SENSOR_VELOCIDADE_2_A,  INT_EDGE_FALLING, &handleSpeedSensor2A);
-    wiringPiISR(SENSOR_VELOCIDADE_2_B,  INT_EDGE_FALLING, &handleSpeedSensor2B);
+    wiringPiISR(BOTAO_PEDESTRE_1,      INT_EDGE_BOTH, &handlePedestrianButton1);
+    wiringPiISR(BOTAO_PEDESTRE_2,      INT_EDGE_BOTH, &handlePedestrianButton2);
+    wiringPiISR(SENSOR_PASSAGEM_1,     INT_EDGE_BOTH, &handlePassageSensor1);
+    wiringPiISR(SENSOR_PASSAGEM_2,     INT_EDGE_BOTH, &handlePassageSensor2);
+    wiringPiISR(SENSOR_VELOCIDADE_1_A, INT_EDGE_BOTH, &handleSpeedSensor1A);
+    wiringPiISR(SENSOR_VELOCIDADE_1_B, INT_EDGE_BOTH, &handleSpeedSensor1B);
+    wiringPiISR(SENSOR_VELOCIDADE_2_A, INT_EDGE_BOTH, &handleSpeedSensor2A);
+    wiringPiISR(SENSOR_VELOCIDADE_2_B, INT_EDGE_BOTH, &handleSpeedSensor2B);
 
     cerr << "digitalRead(BOTAO_PEDESTRE_1     ): " << digitalRead(BOTAO_PEDESTRE_1     ) << endl;
     cerr << "digitalRead(BOTAO_PEDESTRE_1     ): " << digitalRead(BOTAO_PEDESTRE_1     ) << endl;
@@ -149,9 +161,10 @@ int main(int argc, char **argv)
     cerr << "digitalRead(SENSOR_VELOCIDADE_2_A): " << digitalRead(SENSOR_VELOCIDADE_2_A) << endl;
     cerr << "digitalRead(SENSOR_VELOCIDADE_2_B): " << digitalRead(SENSOR_VELOCIDADE_2_B) << endl;
     cerr << "digitalRead(SENSOR_VELOCIDADE_2_B): " << digitalRead(SENSOR_VELOCIDADE_2_B) << endl;
+
+    thread printInfoThread(printInfo);
 
     int nextStateNum = 0;
-    TrafficLightState currentState;
     while(1){
         // Emergency Mode
         if(inoutEmergencyMode){
