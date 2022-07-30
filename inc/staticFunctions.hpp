@@ -3,7 +3,6 @@
 #include <chrono>
 #include <iostream>
 
-#define debug(x) std::cerr << #x << ": " << x << std::endl;
 uint64_t getTimeMs();
 
 #endif /* STATIC_FUNCTIONS_H_ */

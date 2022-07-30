@@ -1,12 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <bitset>
 #include <wiringPi.h>
 #include <iostream>
 
 #include "staticFunctions.hpp"
 #include "globalValues.hpp"
-// #include "handlers.hpp"
+#include "handlers.hpp"
 
 using namespace std;
 
@@ -134,22 +133,22 @@ int main(int argc, char **argv)
     wiringPiISR(SENSOR_VELOCIDADE_2_A,  INT_EDGE_FALLING, &handleSpeedSensor2A);
     wiringPiISR(SENSOR_VELOCIDADE_2_B,  INT_EDGE_FALLING, &handleSpeedSensor2B);
 
-    debug(digitalRead(BOTAO_PEDESTRE_1     ));
-    debug(digitalRead(BOTAO_PEDESTRE_1     ));
-    debug(digitalRead(BOTAO_PEDESTRE_2     ));
-    debug(digitalRead(BOTAO_PEDESTRE_2     ));
-    debug(digitalRead(SENSOR_PASSAGEM_1    ));
-    debug(digitalRead(SENSOR_PASSAGEM_1    ));
-    debug(digitalRead(SENSOR_PASSAGEM_2    ));
-    debug(digitalRead(SENSOR_PASSAGEM_2    ));
-    debug(digitalRead(SENSOR_VELOCIDADE_1_A));
-    debug(digitalRead(SENSOR_VELOCIDADE_1_A));
-    debug(digitalRead(SENSOR_VELOCIDADE_1_B));
-    debug(digitalRead(SENSOR_VELOCIDADE_1_B));
-    debug(digitalRead(SENSOR_VELOCIDADE_2_A));
-    debug(digitalRead(SENSOR_VELOCIDADE_2_A));
-    debug(digitalRead(SENSOR_VELOCIDADE_2_B));
-    debug(digitalRead(SENSOR_VELOCIDADE_2_B));
+    cerr << "digitalRead(BOTAO_PEDESTRE_1     ): " << digitalRead(BOTAO_PEDESTRE_1     ) << endl;
+    cerr << "digitalRead(BOTAO_PEDESTRE_1     ): " << digitalRead(BOTAO_PEDESTRE_1     ) << endl;
+    cerr << "digitalRead(BOTAO_PEDESTRE_2     ): " << digitalRead(BOTAO_PEDESTRE_2     ) << endl;
+    cerr << "digitalRead(BOTAO_PEDESTRE_2     ): " << digitalRead(BOTAO_PEDESTRE_2     ) << endl;
+    cerr << "digitalRead(SENSOR_PASSAGEM_1    ): " << digitalRead(SENSOR_PASSAGEM_1    ) << endl;
+    cerr << "digitalRead(SENSOR_PASSAGEM_1    ): " << digitalRead(SENSOR_PASSAGEM_1    ) << endl;
+    cerr << "digitalRead(SENSOR_PASSAGEM_2    ): " << digitalRead(SENSOR_PASSAGEM_2    ) << endl;
+    cerr << "digitalRead(SENSOR_PASSAGEM_2    ): " << digitalRead(SENSOR_PASSAGEM_2    ) << endl;
+    cerr << "digitalRead(SENSOR_VELOCIDADE_1_A): " << digitalRead(SENSOR_VELOCIDADE_1_A) << endl;
+    cerr << "digitalRead(SENSOR_VELOCIDADE_1_A): " << digitalRead(SENSOR_VELOCIDADE_1_A) << endl;
+    cerr << "digitalRead(SENSOR_VELOCIDADE_1_B): " << digitalRead(SENSOR_VELOCIDADE_1_B) << endl;
+    cerr << "digitalRead(SENSOR_VELOCIDADE_1_B): " << digitalRead(SENSOR_VELOCIDADE_1_B) << endl;
+    cerr << "digitalRead(SENSOR_VELOCIDADE_2_A): " << digitalRead(SENSOR_VELOCIDADE_2_A) << endl;
+    cerr << "digitalRead(SENSOR_VELOCIDADE_2_A): " << digitalRead(SENSOR_VELOCIDADE_2_A) << endl;
+    cerr << "digitalRead(SENSOR_VELOCIDADE_2_B): " << digitalRead(SENSOR_VELOCIDADE_2_B) << endl;
+    cerr << "digitalRead(SENSOR_VELOCIDADE_2_B): " << digitalRead(SENSOR_VELOCIDADE_2_B) << endl;
 
     int nextStateNum = 0;
     TrafficLightState currentState;
@@ -157,7 +156,7 @@ int main(int argc, char **argv)
         // Emergency Mode
         if(inoutEmergencyMode){
             onEmergencyMode = !onEmergencyMode;
-            debug(onEmergencyMode);
+            cerr << "onEmergencyMode: " << onEmergencyMode << endl;
             if(onEmergencyMode) setState(emergencyModeState.state);
             inoutEmergencyMode = false;
         }
@@ -165,12 +164,12 @@ int main(int argc, char **argv)
         if(!onEmergencyMode){
             currentState = (onNightMode? nightModeStates[nextStateNum] : states[nextStateNum]);
             uint64_t stateStartTime = setState(currentState.state);
-            debug(stateStartTime);               
+            cerr << "stateStartTime: " << stateStartTime << endl;
             delay(currentState.minTime);
 
             // Handle pedestrian's buttons and passage's sensors
             while((int)(getTimeMs() - stateStartTime) < currentState.maxTime){
-                debug(getTimeMs() - stateStartTime);
+                cerr << "getTimeMs() - stateStartTime: " << getTimeMs() - stateStartTime << endl;
                 if(pedestrianButton1Pressed && currentState.state == 0b100001){
                     pedestrianButton1Pressed = false;
                     break;
@@ -195,7 +194,7 @@ int main(int argc, char **argv)
             // Night Mode
             if(inoutNightMode && (currentState.state == 0b100100 || currentState.state.none())){
                 onNightMode = !onNightMode;
-                debug(onNightMode);
+                cerr << "onNightMode: " << onNightMode << endl;
                 nextStateNum = 0;
                 inoutNightMode = false;
             }

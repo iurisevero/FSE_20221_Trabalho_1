@@ -3,8 +3,6 @@
 
 #include <bitset>
 
-namespace GlobalValues
-
 #define QNT_DEFAULT_STATES 6
 #define QNT_NIGHT_MODE_STATES 2
 
@@ -45,5 +43,16 @@ namespace GlobalValues
 #define SENSOR_VELOCIDADE_1_B    3 // Entrada
 #define SENSOR_VELOCIDADE_2_A   23 // Entrada
 #define SENSOR_VELOCIDADE_2_B   24 // Entrada
+
+typedef struct {
+    std::bitset<6> state;
+    int minTime;
+    int maxTime;
+} TrafficLightState;
+
+extern TrafficLightState states[QNT_DEFAULT_STATES], nightModeStates[QNT_NIGHT_MODE_STATES], emergencyModeState;
+extern bool inoutNightMode, inoutEmergencyMode;
+extern bool pedestrianButton1Pressed, pedestrianButton2Pressed;
+extern bool passageSensorPressed;
 
 #endif /* _GLOBAL_VALUES_H_ */

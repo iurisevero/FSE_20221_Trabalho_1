@@ -1,5 +1,9 @@
 #include "handlers.hpp"
+#include "globalValues.hpp"
+#include "staticFunctions.hpp"
+
 #include <wiringPi.h>
+#include <iostream>
 
 // Default inputs
 int defaultPedestrianButton1;
@@ -28,9 +32,9 @@ void setDefaultInputValues(){
 //     uint64_t pressedTime = getTimeMs();
 //     int counter = 0;
 //     while(getTimeMs() - pressedTime < 400){
-//         debug(getTimeMs() - pressedTime);
+//     std::cerr << "getTimeMs() - pressedTime: " << getTimeMs() - pressedTime << std::endl;
 //         int read = digitalRead(BOTAO_PEDESTRE_1);
-//         debug(read);
+//         std::cerr << "read: " << read << std::endl;
 //         counter += (read == defaultPassageSensor1? -1 : 1);
 //         if(counter == 5){
 //             pedestrianButton1Pressed = true;
@@ -41,7 +45,7 @@ void setDefaultInputValues(){
 //             break;
 //         }
 //     }
-//     debug(pedestrianButton1Pressed);
+//     std::cerr << "pedestrianButton1Pressed: " << pedestrianButton1Pressed << std::endl;
 // }
 
 // Pedestrian Button 1 Handles
@@ -56,7 +60,7 @@ void handlePedestrianButton1(){
             break;
         }
     }
-    debug(pedestrianButton1Pressed);
+    std::cerr << "pedestrianButton1Pressed: " << pedestrianButton1Pressed << std::endl;
 }
 
 // Pedestrian Button 2 Handles
@@ -71,7 +75,7 @@ void handlePedestrianButton2(){
             break;
         }
     }
-    debug(pedestrianButton2Pressed);
+    std::cerr << "pedestrianButton2Pressed: " << pedestrianButton2Pressed << std::endl;
 }
 
 // Passage sensor 1 Handles
@@ -90,7 +94,7 @@ void handlePassageSensor1(){
             break;
         }
     }
-    debug(passageSensorPressed);
+    std::cerr << "passageSensorPressed: " << passageSensorPressed << std::endl;
 }
 
 // Passage sensor 2 Handles
@@ -109,7 +113,7 @@ void handlePassageSensor2(){
             break;
         }
     }
-    debug(passageSensorPressed);
+    std::cerr << "passageSensorPressed: " << passageSensorPressed << std::endl;
 }
 
 // Speed sensor 1 Handles
@@ -122,7 +126,7 @@ void handleSpeedSensor1A(){
         counter += (digitalRead(SENSOR_VELOCIDADE_1_A) == defaultSpeedSensor1A? -1 : 1);
         if(counter == 5){
             uint64_t deltaT = getTimeMs() - speedSensor1BTriggerTime;
-            printf("deltaT: %llu ; Speed: %d km / h\n", deltaT, 3600 / deltaT);
+            printf("deltaT: %lu ; Speed: %ld km / h\n", deltaT, 3600 / deltaT);
             break;
         }
     }
@@ -139,7 +143,7 @@ void handleSpeedSensor1B(){
             break;
         }
     }
-    debug(speedSensor1BTriggerTime);
+    std::cerr << "speedSensor1BTriggerTime: " << speedSensor1BTriggerTime << std::endl;
 }
 
 
@@ -153,7 +157,7 @@ void handleSpeedSensor2B(){
         counter += (digitalRead(SENSOR_VELOCIDADE_2_B) == defaultSpeedSensor2B? -1 : 1);
         if(counter == 5){
             uint64_t deltaT = getTimeMs() - speedSensor2ATriggerTime;
-            printf("deltaT: %llu ; Speed: %d km / h\n", deltaT, 3600 / deltaT);
+            printf("deltaT: %lu ; Speed: %ld km / h\n", deltaT, 3600 / deltaT);
             break;
         }
     }
@@ -170,5 +174,5 @@ void handleSpeedSensor2A(){
             break;
         }
     }
-    debug(speedSensor2ATriggerTime);
+    std::cerr << "speedSensor2ATriggerTime: " << speedSensor2ATriggerTime << std::endl;
 }
