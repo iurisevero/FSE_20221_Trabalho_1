@@ -26,8 +26,24 @@ void playSoundThread(char * sound){
 }
 
 void addToMainRoadSpeedAverage(long int speed){
+    smphTrafficInfo.acquire();
     float totalCarsMainRoad = qntCarsTriggerSpeedSensor1 + qntCarsTriggerSpeedSensor2;
     mainRoadSpeedAverage = (
         ((mainRoadSpeedAverage * totalCarsMainRoad) + speed) / (totalCarsMainRoad + 1)
     );
+    smphTrafficInfo.release();
+}
+
+void addToCarsLastMinute(){
+    smphTrafficInfo.acquire();
+    carsLastMinute++;
+    smphTrafficInfo.release();
+}
+
+void calculateCarsPerMinuteAverage(){
+    smphTrafficInfo.acquire();
+    carsPerMinuteAverage = (
+        ((carsPerMinuteAverage * countCarsPerMinute) + carsLastMinute) / (countCarsPerMinute + 1)
+    );
+    smphTrafficInfo.release();
 }

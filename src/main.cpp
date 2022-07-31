@@ -40,8 +40,19 @@ void setPins(){
     pinMode(trafficLight2Red,    OUTPUT);
 }
 
+void calculateCarsMin(){
+    while(1){
+        delay(60000);
+        calculateCarsPerMinuteAverage();
+        smphTrafficInfo.acquire();
+        carsLastMinute = 0;
+        smphTrafficInfo.release();
+    }
+}
+
 void printInfo(){
     while(1){
+        cerr << endl;
         cerr << "qntCarsTriggeredSensor1: " << qntCarsTriggeredSensor1 << endl;
         cerr << "qntCarsTriggeredSensor2: " << qntCarsTriggeredSensor2 << endl;
         cerr << "qntCarsTriggerSpeedSensor1: " << qntCarsTriggerSpeedSensor1 << endl;
@@ -49,7 +60,11 @@ void printInfo(){
         cerr << "passRedLight: " << passRedLight << endl;
         cerr << "speeding: " << speeding << endl;
         cerr << "mainRoadSpeedAverage: " << mainRoadSpeedAverage << endl;
-        delay(60000);
+        cerr << "countCarsPerMinute: " << countCarsPerMinute << endl;
+        cerr << "carsLastMinute: " << carsLastMinute << endl;
+        cerr << "carsPerMinuteAverage: " << carsPerMinuteAverage << endl;
+        cerr << endl;
+        delay(5000);
     }
 }
 
@@ -67,6 +82,7 @@ int main(int argc, char **argv)
     
     setPins();
     setState(nightModeStates[0].state); // just for test
+    delay(1000);
 
     cerr << "digitalRead(pedestrianButton1     ): " << digitalRead(pedestrianButton1     ) << endl;
     cerr << "digitalRead(pedestrianButton1     ): " << digitalRead(pedestrianButton1     ) << endl;
@@ -84,8 +100,11 @@ int main(int argc, char **argv)
     cerr << "digitalRead(speedSensor2A): " << digitalRead(speedSensor2A) << endl;
     cerr << "digitalRead(speedSensor2B): " << digitalRead(speedSensor2B) << endl;
     cerr << "digitalRead(speedSensor2B): " << digitalRead(speedSensor2B) << endl;
+
+    smphTrafficInfo.release();
 
     thread printInfoThread(printInfo);
-    thread trafficLightController(runTrafficLight);
-    trafficLightController.join();
+    thread calculateCarsMinThread(calculateCarsMin);
+    thread trafficLightControllerThread(runTrafficLight);
+    trafficLightControllerThread.join();
 }

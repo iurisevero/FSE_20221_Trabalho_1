@@ -92,7 +92,12 @@ void handlePassageSensor1(){
         else if(counter == -5){
             passageSensorPressed = false;
             qntCarsTriggeredSensor1++;
-            if(currentState.state[2] == 1) passRedLight++;
+            addToCarsLastMinute();
+            if(currentState.state[2] == 1){
+                smphTrafficInfo.acquire();
+                passRedLight++;
+                smphTrafficInfo.release();
+            }
             break;
         }
     }
@@ -113,7 +118,12 @@ void handlePassageSensor2(){
         else if(counter == -5){
             passageSensorPressed = false;
             qntCarsTriggeredSensor2++;
-            if(currentState.state[2] == 1) passRedLight++;
+            addToCarsLastMinute();
+            if(currentState.state[2] == 1){
+                smphTrafficInfo.acquire();
+                passRedLight++;
+                smphTrafficInfo.release();
+            }
             break;
         }
     }
@@ -129,13 +139,24 @@ void handleSpeedSensor1A(){
     while(getTimeMs() - pressedTime < 400){
         counter += (digitalRead(speedSensor1A) == defaultSpeedSensor1A? -1 : 1);
         if(counter == 5){
-            long int speed = 3600 / (getTimeMs() - speedSensor1BTriggerTime);
-            if(speed < 1000000){
-                if(speed > 60) speeding++;
-                if(currentState.state[5] == 1) passRedLight++;
+            long int deltaT = getTimeMs() - speedSensor1BTriggerTime;
+            long int speed = 3600 / deltaT;
+            std::cerr << "deltaT: " << deltaT << "; speed: " << speed << std::endl;
+            if(speed > 0){
+                if(speed > 60){
+                    smphTrafficInfo.acquire();
+                    speeding++;
+                    smphTrafficInfo.release();
+                }
+                if(currentState.state[5] == 1){
+                    smphTrafficInfo.acquire();
+                    passRedLight++;
+                    smphTrafficInfo.release();
+                }
                 addToMainRoadSpeedAverage(speed); 
             }
             qntCarsTriggerSpeedSensor1++;
+            addToCarsLastMinute();
 
             speedSensor1BTriggerTime = UINT64_MAX;
             break;
@@ -167,13 +188,25 @@ void handleSpeedSensor2B(){
     while(getTimeMs() - pressedTime < 400){
         counter += (digitalRead(speedSensor2B) == defaultSpeedSensor2B? -1 : 1);
         if(counter == 5){
-            long int speed = 3600 / (getTimeMs() - speedSensor2ATriggerTime);
-            if(speed < 1000000){
-                if(speed > 60) speeding++;
-                if(currentState.state[5] == 1) passRedLight++;
+            long int deltaT = getTimeMs() - speedSensor2ATriggerTime;
+            long int speed = 3600 / deltaT;
+            std::cerr << "deltaT: " << deltaT << "; speed: " << speed << std::endl;
+            if(speed > 0){
+                if(speed > 60){
+                    smphTrafficInfo.acquire();
+                    speeding++;
+                    smphTrafficInfo.release();
+                }
+                if(currentState.state[5] == 1){
+                    smphTrafficInfo.acquire();
+                    passRedLight++;
+                    smphTrafficInfo.release();
+                }
                 addToMainRoadSpeedAverage(speed); 
             }
             qntCarsTriggerSpeedSensor2++;
+            addToCarsLastMinute();
+
             speedSensor2ATriggerTime = UINT64_MAX;
             break;
         }

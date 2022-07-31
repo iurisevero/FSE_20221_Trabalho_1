@@ -1,10 +1,14 @@
 #ifndef _GLOBAL_VALUES_H_
 #define _GLOBAL_VALUES_H_
 
+#include "semaphore.hpp"
+
 #include <bitset>
 
 // Sound Paths
 extern const char * redLightAlarm;
+
+extern semaphore smphTrafficInfo;
 
 typedef struct {
     std::bitset<6> state;
@@ -29,6 +33,8 @@ extern int qntCarsTriggeredSensor1, qntCarsTriggeredSensor2;
 extern int qntCarsTriggerSpeedSensor1, qntCarsTriggerSpeedSensor2;
 extern int speeding, passRedLight;
 extern float mainRoadSpeedAverage;
+extern int carsLastMinute, countCarsPerMinute;
+extern float carsPerMinuteAverage;
 
 extern int trafficLight1Green, trafficLight1Yellow, trafficLight1Red;
 extern int trafficLight2Green, trafficLight2Yellow, trafficLight2Red;
