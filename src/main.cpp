@@ -46,6 +46,9 @@ void printInfo(){
         cerr << "qntCarsTriggeredSensor2: " << qntCarsTriggeredSensor2 << endl;
         cerr << "qntCarsTriggerSpeedSensor1: " << qntCarsTriggerSpeedSensor1 << endl;
         cerr << "qntCarsTriggerSpeedSensor2: " << qntCarsTriggerSpeedSensor2 << endl;
+        cerr << "passRedLight: " << passRedLight << endl;
+        cerr << "speeding: " << speeding << endl;
+        cerr << "mainRoadSpeedAverage: " << mainRoadSpeedAverage << endl;
         delay(60000);
     }
 }

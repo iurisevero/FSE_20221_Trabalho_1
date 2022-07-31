@@ -92,6 +92,7 @@ void handlePassageSensor1(){
         else if(counter == -5){
             passageSensorPressed = false;
             qntCarsTriggeredSensor1++;
+            if(currentState.state[2] == 1) passRedLight++;
             break;
         }
     }
@@ -112,6 +113,7 @@ void handlePassageSensor2(){
         else if(counter == -5){
             passageSensorPressed = false;
             qntCarsTriggeredSensor2++;
+            if(currentState.state[2] == 1) passRedLight++;
             break;
         }
     }
@@ -126,15 +128,16 @@ void handleSpeedSensor1A(){
     int counter = 0;
     while(getTimeMs() - pressedTime < 400){
         counter += (digitalRead(speedSensor1A) == defaultSpeedSensor1A? -1 : 1);
-        printf("Sensor de velocidade 1 A counter: %d\n", counter);
         if(counter == 5){
-            uint64_t deltaT = getTimeMs() - speedSensor1BTriggerTime;
-            printf("deltaT: %lu ; Speed: %ld km / h\n", deltaT, 3600 / deltaT);
-            speedSensor1BTriggerTime = UINT64_MAX;
-            break;
-        } else if(counter == -5){
-            printf("Sensor de velocidade 1 A counter -5\n");
+            long int speed = 3600 / (getTimeMs() - speedSensor1BTriggerTime);
+            if(speed < 1000000){
+                if(speed > 60) speeding++;
+                if(currentState.state[5] == 1) passRedLight++;
+                addToMainRoadSpeedAverage(speed); 
+            }
             qntCarsTriggerSpeedSensor1++;
+
+            speedSensor1BTriggerTime = UINT64_MAX;
             break;
         }
     }
@@ -163,15 +166,15 @@ void handleSpeedSensor2B(){
     int counter = 0;
     while(getTimeMs() - pressedTime < 400){
         counter += (digitalRead(speedSensor2B) == defaultSpeedSensor2B? -1 : 1);
-        printf("Sensor de velocidade 2 B counter: %d\n", counter);
         if(counter == 5){
-            uint64_t deltaT = getTimeMs() - speedSensor2ATriggerTime;
-            printf("deltaT: %lu ; Speed: %ld km / h\n", deltaT, 3600 / deltaT);
-            speedSensor2ATriggerTime = UINT64_MAX;
-            break;
-        } else if(counter == -5){
-            printf("Sensor de velocidade 2 B counter -5\n");
+            long int speed = 3600 / (getTimeMs() - speedSensor2ATriggerTime);
+            if(speed < 1000000){
+                if(speed > 60) speeding++;
+                if(currentState.state[5] == 1) passRedLight++;
+                addToMainRoadSpeedAverage(speed); 
+            }
             qntCarsTriggerSpeedSensor2++;
+            speedSensor2ATriggerTime = UINT64_MAX;
             break;
         }
     }

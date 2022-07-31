@@ -14,6 +14,8 @@ bool passageSensorPressed = false;
 
 int qntCarsTriggeredSensor1 = 0, qntCarsTriggeredSensor2 = 0;
 int qntCarsTriggerSpeedSensor1 = 0, qntCarsTriggerSpeedSensor2 = 0;
+int speeding = 0, passRedLight = 0;
+float mainRoadSpeedAverage = 0.0f;
 
 int trafficLight1Green, trafficLight1Yellow, trafficLight1Red;
 int trafficLight2Green, trafficLight2Yellow, trafficLight2Red;

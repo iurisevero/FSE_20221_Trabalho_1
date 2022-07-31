@@ -24,3 +24,10 @@ uint64_t setState(std::bitset<6> state){
 void playSoundThread(char * sound){
     std::thread play([&sound]{system(strcat((char *)"omxplayer ", sound));});
 }
+
+void addToMainRoadSpeedAverage(long int speed){
+    float totalCarsMainRoad = qntCarsTriggerSpeedSensor1 + qntCarsTriggerSpeedSensor2;
+    mainRoadSpeedAverage = (
+        ((mainRoadSpeedAverage * totalCarsMainRoad) + speed) / (totalCarsMainRoad + 1)
+    );
+}

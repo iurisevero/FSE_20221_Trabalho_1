@@ -27,6 +27,8 @@ extern bool passageSensorPressed;
 
 extern int qntCarsTriggeredSensor1, qntCarsTriggeredSensor2;
 extern int qntCarsTriggerSpeedSensor1, qntCarsTriggerSpeedSensor2;
+extern int speeding, passRedLight;
+extern float mainRoadSpeedAverage;
 
 extern int trafficLight1Green, trafficLight1Yellow, trafficLight1Red;
 extern int trafficLight2Green, trafficLight2Yellow, trafficLight2Red;
