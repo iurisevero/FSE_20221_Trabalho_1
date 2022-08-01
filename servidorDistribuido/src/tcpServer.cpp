@@ -6,21 +6,19 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <string>
 
 void treatCustomerTCP(int socketClient) {
-	char buffer[16];
+	char buffer[1000];
 	int sizeReceived;
 
-	if((sizeReceived = recv(socketClient, buffer, 16, 0)) < 0)
+	if((sizeReceived = recv(socketClient, buffer, 1000, 0)) < 0)
 		printf("Error in recv()\n");
 
-	while (sizeReceived > 0) {
-		if(send(socketClient, buffer, sizeReceived, 0) != sizeReceived)
-			printf("Error in send()\n");
-		
-		if((sizeReceived = recv(socketClient, buffer, 16, 0)) < 0)
-			printf("Error in recv()\n");
-	}
+	if(send(socketClient, buffer, sizeReceived, 0) != sizeReceived)
+		printf("Error in send()\n");
+
+	printf("receivedMessage: %s\n", buffer);
 }
 
 void runTcpServer(unsigned short serverPort) {

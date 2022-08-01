@@ -108,8 +108,9 @@ int main(int argc, char **argv)
     smphTrafficInfo.release();
 
     thread runTcpServerThread(runTcpServer, port);
-    thread printInfoThread(printInfo);
-    thread calculateCarsMinThread(calculateCarsMin);
-    thread trafficLightControllerThread(runTrafficLight);
-    trafficLightControllerThread.join();
+    // thread printInfoThread(printInfo);
+    // thread calculateCarsMinThread(calculateCarsMin);
+    // thread trafficLightControllerThread(runTrafficLight);
+    // trafficLightControllerThread.join();
+    runTcpServerThread.join();
 }

@@ -10,7 +10,7 @@
 void clientSocketConnection(char * IP_Server, unsigned short serverPort, char * message){
 	int clientSocket;
 	struct sockaddr_in serverAddr;
-	char buffer[16];
+	char buffer[1000];
 	unsigned int sizeMessage;
 
 	int bytesRecebidos;
@@ -38,7 +38,7 @@ void clientSocketConnection(char * IP_Server, unsigned short serverPort, char * 
 
 	totalBytesRecebidos = 0;
 	while(totalBytesRecebidos < sizeMessage) {
-		if((bytesRecebidos = recv(clientSocket, buffer, 16-1, 0)) <= 0)
+		if((bytesRecebidos = recv(clientSocket, buffer, 1000-1, 0)) <= 0)
 			printf("Did not receive total bytes sent\n");
 		totalBytesRecebidos += bytesRecebidos;
 		buffer[bytesRecebidos] = '\0';
