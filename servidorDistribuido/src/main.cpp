@@ -7,6 +7,8 @@
 #include "globalValues.hpp"
 #include "generalFunctions.hpp"
 #include "trafficLightController.hpp"
+#include "tcpServer.hpp"
+#include "tcpClient.hpp"
 
 using namespace std;
 
@@ -70,12 +72,14 @@ void printInfo(){
 
 int main(int argc, char **argv)
 {
-    if(argc < 2){
-        printf("Invalid execution. Please inform the selected cross\n");
-        printf("For cross 1 run `$make run CROSS=1` or `$make run CROSS=2` for cross 2;\n");
-        return -1;
-    }
+    if (argc != 5) {
+		printf("Use: %s <Cross> <Port> <Central Server IP> <Central Server Port>\n", argv[0]);
+        printf("At make run use: `make run CROSS= PORT= CENTRALSERVERIP= CENTRALSERVERPORT=\n");
+		exit(1);
+	}
+
     setPinsConfigurationValues(argv[1]);
+    setTcpClientServerValues(argv[2], argv[3], argv[4]);
 
     if(wiringPiSetup () == -1)
         return 1 ;
@@ -103,6 +107,7 @@ int main(int argc, char **argv)
 
     smphTrafficInfo.release();
 
+    thread runTcpServerThread(runTcpServer, port);
     thread printInfoThread(printInfo);
     thread calculateCarsMinThread(calculateCarsMin);
     thread trafficLightControllerThread(runTrafficLight);

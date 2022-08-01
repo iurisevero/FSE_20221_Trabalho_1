@@ -12,6 +12,7 @@ TrafficLightState states[QNT_DEFAULT_STATES], nightModeStates[QNT_NIGHT_MODE_STA
 TrafficLightState emergencyModeState, currentState;
 
 bool inoutNightMode = false, inoutEmergencyMode = false;
+
 bool pedestrianButton1Pressed = false, pedestrianButton2Pressed = false;
 bool passageSensorPressed = false;
 
@@ -60,4 +61,14 @@ void setPinsConfigurationValues(char* cross){
         speedSensor2A =        5; // Entrada
         speedSensor2B =        6; // Entrada
     }
+}
+
+char * centralServerIP;
+unsigned short port, centralServerPort;
+
+void setTcpClientServerValues(char * _port, char * _centralServerIP, char * _centralServerPort){
+    centralServerIP = (char *) malloc(strlen(_centralServerIP) + 1);
+    strcpy(centralServerIP, _centralServerIP);
+    port = atoi(_port);
+    centralServerPort = atoi(_centralServerPort);
 }

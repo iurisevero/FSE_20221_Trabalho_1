@@ -22,7 +22,9 @@ typedef struct {
 
 extern TrafficLightState states[QNT_DEFAULT_STATES], nightModeStates[QNT_NIGHT_MODE_STATES];
 extern TrafficLightState emergencyModeState, currentState;
+
 extern bool inoutNightMode, inoutEmergencyMode;
+
 extern bool pedestrianButton1Pressed, pedestrianButton2Pressed;
 extern bool passageSensorPressed;
 
@@ -40,5 +42,10 @@ extern int passSensor1, passSensor2;
 extern int speedSensor1A, speedSensor1B, speedSensor2A, speedSensor2B;
 
 void setPinsConfigurationValues(char* cross);
+
+extern char * centralServerIP;
+extern unsigned short port, centralServerPort;
+
+void setTcpClientServerValues(char * _port, char * _centralServerIP, char * _centralServerPort);
 
 #endif /* _GLOBAL_VALUES_H_ */
