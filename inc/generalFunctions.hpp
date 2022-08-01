@@ -5,7 +5,7 @@
 
 uint64_t getTimeMs();
 uint64_t setState(std::bitset<6> state);
-void playSoundThread(char * sound);
+void playSoundThread(const char * sound);
 void addToMainRoadSpeedAverage(long int speed);
 void addToCarsLastMinute();
 void calculateCarsPerMinuteAverage();

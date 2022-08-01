@@ -21,7 +21,7 @@ uint64_t setState(std::bitset<6> state){
     return getTimeMs();
 }
 
-void playSoundThread(char * sound){
+void playSoundThread(const char * sound){
     std::thread play([&sound]{system(strcat((char *)"omxplayer ", sound));});
 }
 

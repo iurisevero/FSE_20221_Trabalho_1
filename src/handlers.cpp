@@ -97,6 +97,7 @@ void handlePassageSensor1(){
                 smphTrafficInfo.acquire();
                 passRedLight++;
                 smphTrafficInfo.release();
+                // playSoundThread(infractionAlarm);
             }
             break;
         }
@@ -123,6 +124,7 @@ void handlePassageSensor2(){
                 smphTrafficInfo.acquire();
                 passRedLight++;
                 smphTrafficInfo.release();
+                // playSoundThread(infractionAlarm);
             }
             break;
         }
@@ -147,11 +149,13 @@ void handleSpeedSensor1A(){
                     smphTrafficInfo.acquire();
                     speeding++;
                     smphTrafficInfo.release();
+                    // playSoundThread(infractionAlarm);
                 }
                 if(currentState.state[5] == 1){
                     smphTrafficInfo.acquire();
                     passRedLight++;
                     smphTrafficInfo.release();
+                    // playSoundThread(infractionAlarm);
                 }
                 addToMainRoadSpeedAverage(speed); 
             }
@@ -196,11 +200,13 @@ void handleSpeedSensor2B(){
                     smphTrafficInfo.acquire();
                     speeding++;
                     smphTrafficInfo.release();
+                    // playSoundThread(infractionAlarm);
                 }
                 if(currentState.state[5] == 1){
                     smphTrafficInfo.acquire();
                     passRedLight++;
                     smphTrafficInfo.release();
+                    // playSoundThread(infractionAlarm);
                 }
                 addToMainRoadSpeedAverage(speed); 
             }

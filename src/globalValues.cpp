@@ -3,7 +3,8 @@
 #include <string.h>
 
 // Sound Paths
-const char * redLightAlarm = "sound/buzzer.mp3";
+const char * redLightAlarm = "sound/redLight.mp3";
+const char * infractionAlarm = "sound/infraction.mp3";
 
 semaphore smphTrafficInfo;
 

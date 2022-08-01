@@ -7,6 +7,7 @@
 
 // Sound Paths
 extern const char * redLightAlarm;
+extern const char * infractionAlarm ;
 
 extern semaphore smphTrafficInfo;
 
@@ -24,10 +25,6 @@ extern TrafficLightState emergencyModeState, currentState;
 extern bool inoutNightMode, inoutEmergencyMode;
 extern bool pedestrianButton1Pressed, pedestrianButton2Pressed;
 extern bool passageSensorPressed;
-
-// typedef struct {
-
-// } TrafficInfo;
 
 extern int qntCarsTriggeredSensor1, qntCarsTriggeredSensor2;
 extern int qntCarsTriggerSpeedSensor1, qntCarsTriggerSpeedSensor2;
