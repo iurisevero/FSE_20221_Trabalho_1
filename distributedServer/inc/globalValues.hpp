@@ -7,7 +7,7 @@
 
 // Sound Paths
 extern const char * redLightAlarm;
-extern const char * infractionAlarm ;
+extern const char * infractionAlarm;
 
 extern semaphore smphTrafficInfo;
 
