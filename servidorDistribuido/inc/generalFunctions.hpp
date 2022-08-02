@@ -9,5 +9,6 @@ void playSoundThread(const char * sound);
 void addToMainRoadSpeedAverage(long int speed);
 void addToCarsLastMinute();
 void calculateCarsPerMinuteAverage();
+void setSpecialMode(char * buffer);
 
 #endif /* GENERAL_FUNCTIONS_H_ */

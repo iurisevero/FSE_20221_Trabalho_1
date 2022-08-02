@@ -8,18 +8,9 @@
 #include <unistd.h>
 #include <string>
 
-void treatCustomerTCP(int socketClient) {
-	char buffer[1000];
-	int sizeReceived;
-
-	if((sizeReceived = recv(socketClient, buffer, 1000, 0)) < 0)
-		printf("Error in recv()\n");
-
-	if(send(socketClient, buffer, sizeReceived, 0) != sizeReceived)
-		printf("Error in send()\n");
-
-	printf("receivedMessage: %s\n", buffer);
-}
+#include "tcpServer.hpp"
+#include "generalFunctions.hpp"
+#include "globalValues.hpp"
 
 void runTcpServer(unsigned short serverPort) {
 	int socketServer;
@@ -58,7 +49,22 @@ void runTcpServer(unsigned short serverPort) {
 		treatCustomerTCP(socketClient);
 		close(socketClient);
 
+		if(exitAllThreads) break;
 	}
 	close(socketServer);
 
+}
+
+void treatCustomerTCP(int socketClient) {
+	char buffer[1000];
+	int sizeReceived;
+
+	if((sizeReceived = recv(socketClient, buffer, 1000, 0)) < 0)
+		printf("Error in recv()\n");
+
+	if(send(socketClient, buffer, sizeReceived, 0) != sizeReceived)
+		printf("Error in send()\n");
+
+	buffer[sizeReceived] = '\0';
+	setSpecialMode(buffer);
 }

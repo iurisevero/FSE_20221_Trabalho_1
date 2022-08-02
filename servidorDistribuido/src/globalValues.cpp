@@ -11,6 +11,8 @@ semaphore smphTrafficInfo;
 TrafficLightState states[QNT_DEFAULT_STATES], nightModeStates[QNT_NIGHT_MODE_STATES];
 TrafficLightState emergencyModeState, currentState;
 
+bool exitAllThreads = false;
+
 bool inoutNightMode = false, inoutEmergencyMode = false;
 
 bool pedestrianButton1Pressed = false, pedestrianButton2Pressed = false;

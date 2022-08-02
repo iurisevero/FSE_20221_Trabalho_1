@@ -3,6 +3,8 @@
 #include <wiringPi.h>
 #include <iostream>
 #include <thread>
+#include <csignal>
+#include <nlohmann/json.hpp>
 
 #include "globalValues.hpp"
 #include "generalFunctions.hpp"
@@ -42,32 +44,45 @@ void setPins(){
     pinMode(trafficLight2Red,    OUTPUT);
 }
 
-void calculateCarsMin(){
+void everyMinInfo(){
     while(1){
         delay(60000);
-        calculateCarsPerMinuteAverage();
+        nlohmann::json trafficInfo;
         smphTrafficInfo.acquire();
+        calculateCarsPerMinuteAverage();
+        trafficInfo["carsLastMinute"] = carsLastMinute;
+        trafficInfo["carsPerMinuteAverage"] = carsPerMinuteAverage;
+        trafficInfo["mainRoadSpeedAverage"] = mainRoadSpeedAverage;
+        trafficInfo["speeding"] = speeding;
+        trafficInfo["passRedLight"] = passRedLight;
         carsLastMinute = 0;
         smphTrafficInfo.release();
+        clientSocketConnection(centralServerIP, centralServerPort, trafficInfo.dump().c_str());
+
+        if(exitAllThreads) return;
     }
 }
 
-void printInfo(){
+void every2SecInfo(){
     while(1){
-        cerr << endl;
-        cerr << "qntCarsTriggeredSensor1: " << qntCarsTriggeredSensor1 << endl;
-        cerr << "qntCarsTriggeredSensor2: " << qntCarsTriggeredSensor2 << endl;
-        cerr << "qntCarsTriggerSpeedSensor1: " << qntCarsTriggerSpeedSensor1 << endl;
-        cerr << "qntCarsTriggerSpeedSensor2: " << qntCarsTriggerSpeedSensor2 << endl;
-        cerr << "passRedLight: " << passRedLight << endl;
-        cerr << "speeding: " << speeding << endl;
-        cerr << "mainRoadSpeedAverage: " << mainRoadSpeedAverage << endl;
-        cerr << "countCarsPerMinute: " << countCarsPerMinute << endl;
-        cerr << "carsLastMinute: " << carsLastMinute << endl;
-        cerr << "carsPerMinuteAverage: " << carsPerMinuteAverage << endl;
-        cerr << endl;
-        delay(5000);
+        delay(2000);
+        nlohmann::json trafficInfo;
+        smphTrafficInfo.acquire();
+        trafficInfo["qntCarsTriggeredSensor1"] = qntCarsTriggeredSensor1;
+        trafficInfo["qntCarsTriggeredSensor2"] = qntCarsTriggeredSensor2;
+        trafficInfo["qntCarsTriggerSpeedSensor1"] = qntCarsTriggerSpeedSensor1;
+        trafficInfo["qntCarsTriggerSpeedSensor2"] = qntCarsTriggerSpeedSensor2;
+        smphTrafficInfo.release();
+        clientSocketConnection(centralServerIP, centralServerPort, trafficInfo.dump().c_str());
+
+        if(exitAllThreads) return;
     }
+}
+
+void signalHandler(int signum){
+    printf("Interrupt signal (%d) received.\n", signum);
+    printf("Stopping program.... It may take a little seconds while the threads are finished\n");
+    exitAllThreads = true;
 }
 
 int main(int argc, char **argv)
@@ -88,29 +103,18 @@ int main(int argc, char **argv)
     setState(nightModeStates[0].state); // just for test
     delay(1000);
 
-    cerr << "digitalRead(pedestrianButton1     ): " << digitalRead(pedestrianButton1     ) << endl;
-    cerr << "digitalRead(pedestrianButton1     ): " << digitalRead(pedestrianButton1     ) << endl;
-    cerr << "digitalRead(pedestrianButton2     ): " << digitalRead(pedestrianButton2     ) << endl;
-    cerr << "digitalRead(pedestrianButton2     ): " << digitalRead(pedestrianButton2     ) << endl;
-    cerr << "digitalRead(passSensor1    ): " << digitalRead(passSensor1    ) << endl;
-    cerr << "digitalRead(passSensor1    ): " << digitalRead(passSensor1    ) << endl;
-    cerr << "digitalRead(passSensor2    ): " << digitalRead(passSensor2    ) << endl;
-    cerr << "digitalRead(passSensor2    ): " << digitalRead(passSensor2    ) << endl;
-    cerr << "digitalRead(speedSensor1A): " << digitalRead(speedSensor1A) << endl;
-    cerr << "digitalRead(speedSensor1A): " << digitalRead(speedSensor1A) << endl;
-    cerr << "digitalRead(speedSensor1B): " << digitalRead(speedSensor1B) << endl;
-    cerr << "digitalRead(speedSensor1B): " << digitalRead(speedSensor1B) << endl;
-    cerr << "digitalRead(speedSensor2A): " << digitalRead(speedSensor2A) << endl;
-    cerr << "digitalRead(speedSensor2A): " << digitalRead(speedSensor2A) << endl;
-    cerr << "digitalRead(speedSensor2B): " << digitalRead(speedSensor2B) << endl;
-    cerr << "digitalRead(speedSensor2B): " << digitalRead(speedSensor2B) << endl;
-
+    signal(SIGINT, signalHandler); 
     smphTrafficInfo.release();
 
     thread runTcpServerThread(runTcpServer, port);
-    // thread printInfoThread(printInfo);
-    // thread calculateCarsMinThread(calculateCarsMin);
-    // thread trafficLightControllerThread(runTrafficLight);
-    // trafficLightControllerThread.join();
+    thread every2SecInfoThread(every2SecInfo);
+    thread everyMinInfoThread(everyMinInfo);
+    thread trafficLightControllerThread(runTrafficLight);
+    trafficLightControllerThread.join();
+    everyMinInfoThread.join();
+    every2SecInfoThread.join();
     runTcpServerThread.join();
+
+    printf("Execution stopped successfully!\n");
+    return 0;
 }

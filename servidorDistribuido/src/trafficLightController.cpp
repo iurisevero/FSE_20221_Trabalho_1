@@ -98,8 +98,8 @@ void runTrafficLight(){
             std::cerr << "stateStartTime: " << stateStartTime << std::endl;
 
             // play buzzer
-            // if(currentState.state == 0b010100 || currentState.state == 0b100010)
-            //     playSoundThread(redLightAlarm);
+            if(currentState.state == 0b010100 || currentState.state == 0b100010)
+                playSoundThread(redLightAlarm);
 
             delay(currentState.minTime);
 
@@ -134,5 +134,7 @@ void runTrafficLight(){
                 inoutNightMode = false;
             }
         }
+
+        if(exitAllThreads) return;
     }
 }

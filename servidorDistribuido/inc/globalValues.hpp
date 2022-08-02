@@ -23,6 +23,8 @@ typedef struct {
 extern TrafficLightState states[QNT_DEFAULT_STATES], nightModeStates[QNT_NIGHT_MODE_STATES];
 extern TrafficLightState emergencyModeState, currentState;
 
+extern bool exitAllThreads;
+
 extern bool inoutNightMode, inoutEmergencyMode;
 
 extern bool pedestrianButton1Pressed, pedestrianButton2Pressed;

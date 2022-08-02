@@ -4,6 +4,7 @@
 #include <wiringPi.h>
 #include <string.h>
 #include <thread>
+#include <nlohmann/json.hpp>
 
 uint64_t getTimeMs(){
     return std::chrono::duration_cast<std::chrono::milliseconds>(
@@ -46,4 +47,12 @@ void calculateCarsPerMinuteAverage(){
         ((carsPerMinuteAverage * countCarsPerMinute) + carsLastMinute) / (countCarsPerMinute + 1)
     );
     smphTrafficInfo.release();
+}
+
+void setSpecialMode(char * buffer){
+    nlohmann::json receivedMessage =  nlohmann::json::parse(buffer);
+	if(receivedMessage.contains("inoutNightMode"))
+		inoutNightMode = receivedMessage["inoutNightMode"];
+	if(receivedMessage.contains("inoutEmergencyMode"))
+		inoutEmergencyMode = receivedMessage["inoutEmergencyMode"];
 }

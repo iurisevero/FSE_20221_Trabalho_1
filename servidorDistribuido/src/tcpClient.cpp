@@ -7,7 +7,9 @@
 #include <string.h>
 #include <unistd.h>
 
-void clientSocketConnection(char * IP_Server, unsigned short serverPort, char * message){
+#include "tcpClient.hpp"
+
+void clientSocketConnection(char * IP_Server, unsigned short serverPort, const char * message){
 	int clientSocket;
 	struct sockaddr_in serverAddr;
 	char buffer[1000];
