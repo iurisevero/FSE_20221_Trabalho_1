@@ -27,11 +27,13 @@ void sendMessageToAllDistributedServers(char * message){
     }
 }
 
-void updateTrafficInfo(char * _ip, std::string _port, char * buffer){
+void updateTrafficInfo(char * _ip, char * buffer){
     try{
         nlohmann::json receivedMessage =  nlohmann::json::parse(buffer);
+        int _port = receivedMessage["port"];
         std::string ipStr(_ip);
-        ipStr.append(_port);
+        ipStr.append(std::to_string(_port));
+        ipStr.push_back('\0');
         if(receivedMessage.contains("qntCarsTriggeredSensor1"))
             qntCarsTriggeredSensor1[ipStr] = receivedMessage["qntCarsTriggeredSensor1"];
         if(receivedMessage.contains("qntCarsTriggeredSensor2"))
@@ -50,6 +52,12 @@ void updateTrafficInfo(char * _ip, std::string _port, char * buffer){
             carsPerMinuteAverage[ipStr] = receivedMessage["carsPerMinuteAverage"];
     }
     catch(nlohmann::json_v3_11_1::detail::parse_error e){
+        printf("Error %d while trying to parse: %s\n", e.id, buffer);
+    }
+    catch(nlohmann::json_v3_11_1::detail::type_error e){
+        printf("Error %d while trying to parse: %s\n", e.id, buffer);
+    }
+    catch(nlohmann::json_v3_11_1::detail::other_error e){
         printf("Error %d while trying to parse: %s\n", e.id, buffer);
     }
 }

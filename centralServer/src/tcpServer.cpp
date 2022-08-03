@@ -46,7 +46,6 @@ void runTcpServer(unsigned short serverPort) {
 				
 		treatCustomerTCP(
 			inet_ntoa(clientAddr.sin_addr),
-			std::to_string(clientAddr.sin_port),
 			socketClient
 		);
 		close(socketClient);
@@ -58,7 +57,7 @@ void runTcpServer(unsigned short serverPort) {
 	return;
 }
 
-void treatCustomerTCP(char * _ip, std::string _port, int socketClient) {
+void treatCustomerTCP(char * _ip, int socketClient) {
 	char buffer[1000];
 	int sizeReceived;
 
@@ -69,5 +68,5 @@ void treatCustomerTCP(char * _ip, std::string _port, int socketClient) {
 		printf("Error in send()\n");
 
 	buffer[sizeReceived] = '\0';
-	updateTrafficInfo(_ip, _port, buffer);
+	updateTrafficInfo(_ip, buffer);
 }

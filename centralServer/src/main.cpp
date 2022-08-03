@@ -52,8 +52,8 @@ int main(int argc, char **argv)
     if(runTcpServerThread.joinable()){
         exitAllThreads = true;
         clientSocketConnection("127.0.0.1", port, "{}");
+        runTcpServerThread.join();
     }
-    runTcpServerThread.join();
 
     printf("Execution stopped successfully!\n");
     return 0;

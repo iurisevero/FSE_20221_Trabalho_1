@@ -64,4 +64,10 @@ void setSpecialMode(char * buffer){
     catch(nlohmann::json_v3_11_1::detail::parse_error e){
         printf("Error %d while trying to parse: %s\n", e.id, buffer);
     }
+    catch(nlohmann::json_v3_11_1::detail::type_error e){
+        printf("Error %d while trying to parse: %s\n", e.id, buffer);
+    }
+    catch(nlohmann::json_v3_11_1::detail::other_error e){
+        printf("Error %d while trying to parse: %s\n", e.id, buffer);
+    }
 }

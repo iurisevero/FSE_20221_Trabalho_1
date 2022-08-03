@@ -50,6 +50,7 @@ void everyMinInfo(){
         nlohmann::json trafficInfo;
         calculateCarsPerMinuteAverage();
         smphTrafficInfo.acquire();
+        trafficInfo["port"] = port;
         trafficInfo["carsLastMinute"] = carsLastMinute;
         trafficInfo["carsPerMinuteAverage"] = carsPerMinuteAverage;
         trafficInfo["mainRoadSpeedAverage"] = mainRoadSpeedAverage;
@@ -71,6 +72,7 @@ void every2SecInfo(){
         delay(2000);
         nlohmann::json trafficInfo;
         smphTrafficInfo.acquire();
+        trafficInfo["port"] = port;
         trafficInfo["qntCarsTriggeredSensor1"] = qntCarsTriggeredSensor1;
         trafficInfo["qntCarsTriggeredSensor2"] = qntCarsTriggeredSensor2;
         trafficInfo["qntCarsTriggerSpeedSensor1"] = qntCarsTriggerSpeedSensor1;

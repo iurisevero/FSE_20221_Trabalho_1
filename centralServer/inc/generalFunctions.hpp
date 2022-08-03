@@ -7,7 +7,7 @@
 void inoutEmergencyMode();
 void inoutNightMode();
 void sendMessageToAllDistributedServers(char * message);
-void updateTrafficInfo(char * _ip, std::string _port, char * buffer);
+void updateTrafficInfo(char * _ip, char * buffer);
 int sumMap(std::map<std::string, int> m);
 float sumMap(std::map<std::string, float> m);
 
