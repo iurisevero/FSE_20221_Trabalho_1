@@ -32,7 +32,6 @@ void clientSocketConnection(const char * IP_Server, unsigned short serverPort, c
 	if(connect(clientSocket, (struct sockaddr *) &serverAddr, 
 							sizeof(serverAddr)) < 0)
 		printf("Error in connect()\n");
-
 	sizeMessage = strlen(message);
 
 	if(send(clientSocket, message, sizeMessage, 0) != sizeMessage)

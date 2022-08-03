@@ -29,6 +29,7 @@ void signalHandler(int signum){
     printf("Interrupt signal (%d) received.\n", signum);
     printf("Stopping program.... It may take a little seconds while the threads are finished\n");
     exitAllThreads = true;
+    printf("Please insert any char followed by enter to continue the finalization...\n");
 }
 
 int main(int argc, char **argv)
@@ -46,7 +47,12 @@ int main(int argc, char **argv)
 
     thread showUIThread(showUI);
     thread runTcpServerThread(runTcpServer, port);
+    
     showUIThread.join();
+    if(runTcpServerThread.joinable()){
+        exitAllThreads = true;
+        clientSocketConnection("127.0.0.1", port, "{}");
+    }
     runTcpServerThread.join();
 
     printf("Execution stopped successfully!\n");

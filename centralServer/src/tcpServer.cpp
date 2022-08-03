@@ -52,7 +52,8 @@ void runTcpServer(unsigned short serverPort) {
 		if(exitAllThreads) break;
 	}
 	close(socketServer);
-
+	printf("Finish TCP Server\n");
+	return;
 }
 
 void treatCustomerTCP(int socketClient) {

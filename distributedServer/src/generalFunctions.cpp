@@ -23,7 +23,10 @@ uint64_t setState(std::bitset<6> state){
 }
 
 void playSoundThread(const char * sound){
-    std::thread play([&sound]{system(strcat((char *)"cvlc --play-and-exit ", sound));});
+    // char command[72] = "cvlc --play-and-exit ";
+    // strcat(command, sound);
+    // std::thread play([&command]{system(command);});
+    // play.detach();
 }
 
 void addToMainRoadSpeedAverage(long int speed){

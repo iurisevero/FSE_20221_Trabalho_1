@@ -10,5 +10,6 @@ void printMenu();
 void printTrafficInfo();
 void printTitle(std::string title);
 void invalidInput();
+void limpaLixo();
 
 #endif /* SERVER_UI_H_ */

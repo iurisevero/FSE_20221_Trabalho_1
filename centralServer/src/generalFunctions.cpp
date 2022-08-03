@@ -15,7 +15,9 @@ void inoutNightMode(){
 }
 
 void sendMessageToAllDistributedServers(char * message){
+    printf("sendMessageToAllDistributedServers: %s\n", message); 
     for(int i=0; i < distributedServersIP.size(); ++i){
+        printf("sendMessageToAllDistributedServers ip: %s:%d\n", distributedServersIP[i].c_str(), distributedServersPort[i]);
         clientSocketConnection(
             distributedServersIP[i].c_str(),
             distributedServersPort[i],

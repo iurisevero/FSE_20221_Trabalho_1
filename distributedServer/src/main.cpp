@@ -113,6 +113,10 @@ int main(int argc, char **argv)
     trafficLightControllerThread.join();
     everyMinInfoThread.join();
     every2SecInfoThread.join();
+    if(runTcpServerThread.joinable()){
+        exitAllThreads = true;
+        clientSocketConnection("127.0.0.1", port, "{}");
+    }
     runTcpServerThread.join();
 
     printf("Execution stopped successfully!\n");
