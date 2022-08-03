@@ -1,3 +1,5 @@
+#include <nlohmann/json.hpp>
+
 #include "generalFunctions.hpp"
 #include "globalValues.hpp"
 #include "tcpClient.hpp"
@@ -20,4 +22,24 @@ void sendMessageToAllDistributedServers(char * message){
             message
         );
     }
+}
+
+void updateTrafficInfo(char * buffer){
+    nlohmann::json receivedMessage =  nlohmann::json::parse(buffer);
+    if(receivedMessage.contains("qntCarsTriggeredSensor1"))
+        qntCarsTriggeredSensor1 = receivedMessage["qntCarsTriggeredSensor1"];
+    if(receivedMessage.contains("qntCarsTriggeredSensor2"))
+        qntCarsTriggeredSensor2 = receivedMessage["qntCarsTriggeredSensor2"];
+    if(receivedMessage.contains("qntCarsTriggerSpeedSensor1"))
+        qntCarsTriggerSpeedSensor1 = receivedMessage["qntCarsTriggerSpeedSensor1"];
+    if(receivedMessage.contains("qntCarsTriggerSpeedSensor2"))
+        qntCarsTriggerSpeedSensor2 = receivedMessage["qntCarsTriggerSpeedSensor2"];
+    if(receivedMessage.contains("speeding"))
+        speeding = receivedMessage["speeding"];
+    if(receivedMessage.contains("passRedLight"))
+        passRedLight = receivedMessage["passRedLight"];
+    if(receivedMessage.contains("mainRoadSpeedAverage"))
+        mainRoadSpeedAverage = receivedMessage["mainRoadSpeedAverage"];
+    if(receivedMessage.contains("carsPerMinuteAverage"))
+        carsPerMinuteAverage = receivedMessage["carsPerMinuteAverage"];
 }

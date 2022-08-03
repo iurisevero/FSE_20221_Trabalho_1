@@ -9,6 +9,7 @@
 #include "globalValues.hpp"
 #include "tcpServer.hpp"
 #include "tcpClient.hpp"
+#include "serverUI.hpp"
 
 using namespace std;
 
@@ -43,7 +44,9 @@ int main(int argc, char **argv)
 
     signal(SIGINT, signalHandler); 
 
+    thread showUIThread(showUI);
     thread runTcpServerThread(runTcpServer, port);
+    showUIThread.join();
     runTcpServerThread.join();
 
     printf("Execution stopped successfully!\n");

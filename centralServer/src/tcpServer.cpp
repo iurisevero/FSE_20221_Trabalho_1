@@ -66,5 +66,5 @@ void treatCustomerTCP(int socketClient) {
 		printf("Error in send()\n");
 
 	buffer[sizeReceived] = '\0';
-	setSpecialMode(buffer);
+	updateTrafficInfo(buffer);
 }

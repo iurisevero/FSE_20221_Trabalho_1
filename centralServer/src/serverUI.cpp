@@ -64,11 +64,16 @@ void printTrafficInfo(){
         "+-------------+--------------+\tCars per Minute Average: %3.2f\n",
         carsPerMinuteAverage
     );
+    cout << endl << "Press any key to return to main menu." << endl;
+    char c;
+    cin >> c;
 }
 
 void printTitle(string title){
-    int N = 63 - title.size();
-    cout << string(N, '-') << " " << title << " " <<  string(N, '-') << endl;
+    int N = 61 - title.size();
+    cout << "+" << string(31, '-') << "+" << string(31, '-') << "+" << endl;
+    cout << "+" << string(N / 2, '-') << " " << title << " " <<  string(N / 2, '-') << "+" << endl;
+    cout << "+" << string(31, '-') << "+" << string(31, '-') << "+" << endl;
 }
 
 void invalidInput(){
