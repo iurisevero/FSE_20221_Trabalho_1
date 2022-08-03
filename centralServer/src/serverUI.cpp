@@ -26,16 +26,16 @@ void handleMenu(){
         printTrafficInfo();
     else if(input == "2"){
         inoutEmergencyMode();
-        cout << "inoutEM" << endl;
+        outputMessage("Emergency Mode Triggered");
     }
     else if(input == "3"){
         inoutNightMode();
-        cout << "inoutNM" << endl;
+        outputMessage("Night Mode Triggered");
     }
     else if(input == "4")
         exitAllThreads = true;
     else
-        invalidInput();
+        outputMessage("Invalid input. Please insert one of the shown options.");
 }
 
 void printMenu(){
@@ -56,23 +56,23 @@ void printTrafficInfo(){
     printf("+-------------+--------------+\t+--------------+--------------+\n");
     printf(
         "| Main Road 1 |          %03d |\t| Speeding       |        %03d |\n",
-        qntCarsTriggerSpeedSensor1, speeding
+        sumMap(qntCarsTriggerSpeedSensor1), sumMap(speeding)
     );
     printf(
         "| Main Road 2 |          %03d |\t| Pass Red Light |        %03d |\n",
-        qntCarsTriggerSpeedSensor2, passRedLight
+        sumMap(qntCarsTriggerSpeedSensor2), sumMap(passRedLight)
     );
     printf(
         "| Sideline 1  |          %03d |\t+--------------+--------------+\n",
-        qntCarsTriggeredSensor1
+        sumMap(qntCarsTriggeredSensor1)
     );
     printf(
-        "| Sideline 2  |          %03d |\tMain Road Speed Average: %3.2f\n",
-        qntCarsTriggeredSensor2, mainRoadSpeedAverage
+        "| Sideline 2  |          %03d |\tMain Road Speed Average: %03.2f\n",
+        sumMap(qntCarsTriggeredSensor2), sumMap(mainRoadSpeedAverage)
     );
     printf(
-        "+-------------+--------------+\tCars per Minute Average: %3.2f\n",
-        carsPerMinuteAverage
+        "+-------------+--------------+\tCars per Minute Average: %03.2f\n",
+        sumMap(carsPerMinuteAverage)
     );
     cout << endl << "Press enter key to return to main menu." << endl;
     limpaLixo();
@@ -81,14 +81,14 @@ void printTrafficInfo(){
 }
 
 void printTitle(string title){
-    int N = 61 - title.size();
-    cout << "+" << string(31, '-') << "+" << string(31, '-') << "+" << endl;
+    int N = 59 - title.size();
+    cout << "+" << string(30, '-') << "+" << string(30, '-') << "+" << endl;
     cout << "+" << string(N / 2, '-') << " " << title << " " <<  string(N / 2 + (N%2), '-') << "+" << endl;
-    cout << "+" << string(31, '-') << "+" << string(31, '-') << "+" << endl;
+    cout << "+" << string(30, '-') << "+" << string(30, '-') << "+" << endl;
 }
 
-void invalidInput(){
-    cout << "Invalid input. Please insert one of the shown options." << endl;
+void outputMessage(string s){
+    cout << s << endl;
     system("sleep 1");
 }
 

@@ -87,7 +87,6 @@ void runTrafficLight(){
         // Emergency Mode
         if(inoutEmergencyMode){
             onEmergencyMode = !onEmergencyMode;
-            std::cerr << "onEmergencyMode: " << onEmergencyMode << std::endl;
             if(onEmergencyMode) setState(emergencyModeState.state);
             inoutEmergencyMode = false;
         }
@@ -95,7 +94,6 @@ void runTrafficLight(){
         if(!onEmergencyMode){
             currentState = (onNightMode? nightModeStates[nextStateNum] : states[nextStateNum]);
             uint64_t stateStartTime = setState(currentState.state);
-            std::cerr << "stateStartTime: " << stateStartTime << std::endl;
 
             // play buzzer
             if(currentState.state == 0b010100 || currentState.state == 0b100010)
@@ -105,7 +103,6 @@ void runTrafficLight(){
 
             // Handle pedestrian's buttons and passage's sensors
             while((int)(getTimeMs() - stateStartTime) < currentState.maxTime){
-                std::cerr << "getTimeMs() - stateStartTime: " << getTimeMs() - stateStartTime << std::endl;
                 if(pedestrianButton1Pressed && currentState.state == 0b100001){
                     pedestrianButton1Pressed = false;
                     break;
@@ -129,12 +126,14 @@ void runTrafficLight(){
             // Night Mode
             if(inoutNightMode && (currentState.state == 0b100100 || currentState.state.none())){
                 onNightMode = !onNightMode;
-                std::cerr << "onNightMode: " << onNightMode << std::endl;
                 nextStateNum = 0;
                 inoutNightMode = false;
             }
         }
 
-        if(exitAllThreads) return;
+        if(exitAllThreads){
+            printf("Finish traffic light controller\n");
+            return;
+        }
     }
 }

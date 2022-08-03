@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include <map>
 
 extern const char * confPath;
 
@@ -12,9 +13,9 @@ extern std::vector<std::string> distributedServersIP;
 extern std::vector<unsigned short> distributedServersPort;
 extern unsigned short port;
 
-extern int qntCarsTriggeredSensor1, qntCarsTriggeredSensor2;
-extern int qntCarsTriggerSpeedSensor1, qntCarsTriggerSpeedSensor2;
-extern int speeding, passRedLight;
-extern float mainRoadSpeedAverage, carsPerMinuteAverage;
+extern std::map<std::string, int> qntCarsTriggeredSensor1, qntCarsTriggeredSensor2;
+extern std::map<std::string, int> qntCarsTriggerSpeedSensor1, qntCarsTriggerSpeedSensor2;
+extern std::map<std::string, int> speeding, passRedLight;
+extern std::map<std::string, float> mainRoadSpeedAverage, carsPerMinuteAverage;
 
 #endif /* _GLOBAL_VALUES_H_ */

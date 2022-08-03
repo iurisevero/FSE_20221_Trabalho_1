@@ -48,8 +48,8 @@ void everyMinInfo(){
     while(1){
         delay(60000);
         nlohmann::json trafficInfo;
-        smphTrafficInfo.acquire();
         calculateCarsPerMinuteAverage();
+        smphTrafficInfo.acquire();
         trafficInfo["carsLastMinute"] = carsLastMinute;
         trafficInfo["carsPerMinuteAverage"] = carsPerMinuteAverage;
         trafficInfo["mainRoadSpeedAverage"] = mainRoadSpeedAverage;
@@ -59,7 +59,10 @@ void everyMinInfo(){
         smphTrafficInfo.release();
         clientSocketConnection(centralServerIP, centralServerPort, trafficInfo.dump().c_str());
 
-        if(exitAllThreads) return;
+        if(exitAllThreads){
+            printf("Finish every min info\n");
+            return;
+        }
     }
 }
 
@@ -75,13 +78,16 @@ void every2SecInfo(){
         smphTrafficInfo.release();
         clientSocketConnection(centralServerIP, centralServerPort, trafficInfo.dump().c_str());
 
-        if(exitAllThreads) return;
+        if(exitAllThreads){
+            printf("Finish every 2 sec info\n");
+            return;
+        }
     }
 }
 
 void signalHandler(int signum){
     printf("Interrupt signal (%d) received.\n", signum);
-    printf("Stopping program.... It may take a little seconds while the threads are finished\n");
+    printf("Stopping program.... It may take a minute while the threads are finished\n");
     exitAllThreads = true;
 }
 

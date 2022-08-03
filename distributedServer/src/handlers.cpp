@@ -28,13 +28,10 @@ void setDefaultInputValues(){
 
 // Handler example
 // void handler(){
-//     printf("Botão pedestre 1\n");
 //     uint64_t pressedTime = getTimeMs();
 //     int counter = 0;
 //     while(getTimeMs() - pressedTime < 400){
-//     std::cerr << "getTimeMs() - pressedTime: " << getTimeMs() - pressedTime << std::endl;
 //         int read = digitalRead(pedestrianButton1);
-//         std::cerr << "read: " << read << std::endl;
 //         counter += (read == defaultPassageSensor1? -1 : 1);
 //         if(counter == 5){
 //             pedestrianButton1Pressed = true;
@@ -45,12 +42,10 @@ void setDefaultInputValues(){
 //             break;
 //         }
 //     }
-//     std::cerr << "pedestrianButton1Pressed: " << pedestrianButton1Pressed << std::endl;
 // }
 
 // Pedestrian Button 1 Handles
 void handlePedestrianButton1(){
-    printf("Botão pedestre 1\n");
     uint64_t pressedTime = getTimeMs();
     int counter = 0;
     while(getTimeMs() - pressedTime < 400){
@@ -60,12 +55,10 @@ void handlePedestrianButton1(){
             break;
         }
     }
-    std::cerr << "pedestrianButton1Pressed: " << pedestrianButton1Pressed << std::endl;
 }
 
 // Pedestrian Button 2 Handles
 void handlePedestrianButton2(){
-    printf("Botão pedestre 2\n");
     uint64_t pressedTime = getTimeMs();
     int counter = 0;
     while(getTimeMs() - pressedTime < 400){
@@ -75,12 +68,10 @@ void handlePedestrianButton2(){
             break;
         }
     }
-    std::cerr << "pedestrianButton2Pressed: " << pedestrianButton2Pressed << std::endl;
 }
 
 // Passage sensor 1 Handles
 void handlePassageSensor1(){
-    printf("Sensor de passagem 1\n");
     uint64_t pressedTime = getTimeMs();
     int counter = 0;
     while(getTimeMs() - pressedTime < 400){
@@ -102,12 +93,10 @@ void handlePassageSensor1(){
             break;
         }
     }
-    std::cerr << "passageSensorPressed: " << passageSensorPressed << std::endl;
 }
 
 // Passage sensor 2 Handles
 void handlePassageSensor2(){
-    printf("Sensor de passagem 2\n");
     uint64_t pressedTime = getTimeMs();
     int counter = 0;
     while(getTimeMs() - pressedTime < 400){
@@ -129,13 +118,11 @@ void handlePassageSensor2(){
             break;
         }
     }
-    std::cerr << "passageSensorPressed: " << passageSensorPressed << std::endl;
 }
 
 // Speed sensor 1 Handles
 uint64_t speedSensor1BTriggerTime = UINT64_MAX;
 void handleSpeedSensor1A(){
-    printf("Sensor de velocidade 1 A\n");
     uint64_t pressedTime = getTimeMs();
     int counter = 0;
     while(getTimeMs() - pressedTime < 400){
@@ -143,7 +130,6 @@ void handleSpeedSensor1A(){
         if(counter == 5){
             long int deltaT = getTimeMs() - speedSensor1BTriggerTime;
             long int speed = 3600 / deltaT;
-            std::cerr << "deltaT: " << deltaT << "; speed: " << speed << std::endl;
             if(speed > 0){
                 if(speed > 60){
                     smphTrafficInfo.acquire();
@@ -169,7 +155,6 @@ void handleSpeedSensor1A(){
 }
 
 void handleSpeedSensor1B(){
-    printf("Sensor de velocidade 1 B\n");
     uint64_t pressedTime = getTimeMs();
     int counter = 0;
     while(getTimeMs() - pressedTime < 400){
@@ -179,14 +164,12 @@ void handleSpeedSensor1B(){
             break;
         }
     }
-    std::cerr << "speedSensor1BTriggerTime: " << speedSensor1BTriggerTime << std::endl;
 }
 
 
 // Speed sensor 2 Handles
 uint64_t speedSensor2ATriggerTime = UINT64_MAX;
 void handleSpeedSensor2B(){
-    printf("Sensor de velocidade 2 B\n");
     uint64_t pressedTime = getTimeMs();
     int counter = 0;
     while(getTimeMs() - pressedTime < 400){
@@ -194,7 +177,6 @@ void handleSpeedSensor2B(){
         if(counter == 5){
             long int deltaT = getTimeMs() - speedSensor2ATriggerTime;
             long int speed = 3600 / deltaT;
-            std::cerr << "deltaT: " << deltaT << "; speed: " << speed << std::endl;
             if(speed > 0){
                 if(speed > 60){
                     smphTrafficInfo.acquire();
@@ -220,7 +202,6 @@ void handleSpeedSensor2B(){
 }
 
 void handleSpeedSensor2A(){
-    printf("Sensor de velocidade 2 A\n");
     uint64_t pressedTime = getTimeMs();
     int counter = 0;
     while(getTimeMs() - pressedTime < 400){
@@ -230,5 +211,4 @@ void handleSpeedSensor2A(){
             break;
         }
     }
-    std::cerr << "speedSensor2ATriggerTime: " << speedSensor2ATriggerTime << std::endl;
 }

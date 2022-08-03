@@ -43,16 +43,15 @@ void runTcpServer(unsigned short serverPort) {
 			                      (struct sockaddr *) &clientAddr, 
 			                      &clientLength)) < 0)
 			printf("Accept failed\n");
-		
-		printf("Client Connection %s\n", inet_ntoa(clientAddr.sin_addr));
-		
+				
 		treatCustomerTCP(socketClient);
 		close(socketClient);
 
 		if(exitAllThreads) break;
 	}
 	close(socketServer);
-
+	printf("Finish TCP server\n");
+	return;
 }
 
 void treatCustomerTCP(int socketClient) {

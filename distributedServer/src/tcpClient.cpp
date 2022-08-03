@@ -44,7 +44,6 @@ void clientSocketConnection(char * IP_Server, unsigned short serverPort, const c
 			printf("Did not receive total bytes sent\n");
 		totalBytesRecebidos += bytesRecebidos;
 		buffer[bytesRecebidos] = '\0';
-		printf("%s\n", buffer);
 	}
 	close(clientSocket);
 }

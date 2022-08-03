@@ -25,6 +25,7 @@ uint64_t setState(std::bitset<6> state){
 void playSoundThread(const char * sound){
     // char command[72] = "cvlc --play-and-exit ";
     // strcat(command, sound);
+    // command[strlen(command)] = '\0';
     // std::thread play([&command]{system(command);});
     // play.detach();
 }
@@ -53,9 +54,14 @@ void calculateCarsPerMinuteAverage(){
 }
 
 void setSpecialMode(char * buffer){
-    nlohmann::json receivedMessage =  nlohmann::json::parse(buffer);
-	if(receivedMessage.contains("inoutNightMode"))
-		inoutNightMode = receivedMessage["inoutNightMode"];
-	if(receivedMessage.contains("inoutEmergencyMode"))
-		inoutEmergencyMode = receivedMessage["inoutEmergencyMode"];
+    try{
+        nlohmann::json receivedMessage =  nlohmann::json::parse(buffer);
+        if(receivedMessage.contains("inoutNightMode"))
+            inoutNightMode = receivedMessage["inoutNightMode"];
+        if(receivedMessage.contains("inoutEmergencyMode"))
+            inoutEmergencyMode = receivedMessage["inoutEmergencyMode"];
+    }
+    catch(nlohmann::json_v3_11_1::detail::parse_error e){
+        printf("Error %d while trying to parse: %s\n", e.id, buffer);
+    }
 }
