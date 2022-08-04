@@ -10,5 +10,7 @@ void sendMessageToAllDistributedServers(char * message);
 void updateTrafficInfo(char * _ip, char * buffer);
 int sumMap(std::map<std::string, int> m);
 float sumMap(std::map<std::string, float> m);
+int sumMapAverage(std::map<std::string, int> m);
+float sumMapAverage(std::map<std::string, float> m);
 
 #endif /* GENERAL_FUNCTIONS_H_ */

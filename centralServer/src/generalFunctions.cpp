@@ -77,3 +77,19 @@ float sumMap(std::map<std::string, float> m){
     }
     return sum;
 }
+
+int sumMapAverage(std::map<std::string, int> m){
+    int sum = 0;
+    for(std::pair<std::string, int> keyValue : m){
+        sum += keyValue.second;
+    }
+    return sum / (m.size()==0? 1 : m.size());
+}
+
+float sumMapAverage(std::map<std::string, float> m){
+    float sum = 0;
+    for(std::pair<std::string, float> keyValue : m){
+        sum += keyValue.second;
+    }
+    return sum / (m.size()==0? 1 : m.size());
+}

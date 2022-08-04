@@ -68,11 +68,11 @@ void printTrafficInfo(){
     );
     printf(
         "| Sideline 2  |          %03d |\tMain Road Speed Average: %03.2f\n",
-        sumMap(qntCarsTriggeredSensor2), sumMap(mainRoadSpeedAverage)
+        sumMap(qntCarsTriggeredSensor2), sumMapAverage(mainRoadSpeedAverage)
     );
     printf(
         "+-------------+--------------+\tCars per Minute Average: %03.2f\n",
-        sumMap(carsPerMinuteAverage)
+        sumMapAverage(carsPerMinuteAverage)
     );
     cout << endl << "Press enter key to return to main menu." << endl;
     limpaLixo();
