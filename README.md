@@ -8,3 +8,7 @@ Para utilização dos servidores distribuídos, basta rodar o comando ```make```
 ## Servidor Central
 
 Para utilização dos servidores distribuídos, basta rodar o comando ```make``` dentro da pasta ```centralServer```. Antes de executar o programa é necesssário colocar as informações dos servidores distribuídos no arquivo ```.conf```. No arquivo ```.conf``` deve ser inserido um servidor distribuído por linha, seguindo o padrão IP:PORT. Por fim, para executar o servidor central utilize o comando ```make run``` com o argumento ```PORT=``` para indicar a porta de conexão TCP.
+
+## Execução Geral
+
+Para que o sistema funcione corretamente é necessário executar o servidor central com o arquivo .conf preenchido e, em seguida, executar os servidores. Não foi feito tratamento de erro para tentativa de conexão em servidores desativados, logo, o levantamento do sistema fora de ordem resulta em erro na conexão dos servidores distribuídos ```Broken pipe```.
