@@ -12,6 +12,7 @@ Para utilização dos servidores distribuídos, basta rodar o comando ```make```
 ### Informações de Transito
 
 As informações apresentadas correspondem a todos cruzamentos conectados. A quantidade de carros por via apresenta a soma da quantidade de carros em todos cruzamentos, enquanto a velocidade média da via principal e a média de carros por minuto faz a soma das informações dos cruzamentos e tira a média do resultado.
+As informações da quantidade de carros é atualizada a cada 2s, enquanto as outras informações atualizam a cada minuto.
 
 ## Execução Geral
 
